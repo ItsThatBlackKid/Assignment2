@@ -8,9 +8,15 @@ Node::Node(Tile* tile, Node* next)
    this->next = next;
 }
 
+// destructor, only deletes what's in the tile
+
+Node::~Node() {
+   delete tile;
+}
+
 Node::Node(Node& other)
 {
    // TODO
-   this->tile = other.tile;
-   this->next = other.next;
+   this->tile = new Tile(*other.tile);
+   this->next = new Node(*other.next);
 }

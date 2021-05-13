@@ -19,7 +19,17 @@ public:
    void addFront(Tile* tile);
    //add to the back of the list
    void addBack(Tile* tile);
-   
+
+   void removeFront();
+
+   // returns copy of node at i   
+   Node* get(int i);
+
+   // returns copy of head
+   Node* getHead();
+
+   // checks if list is empty
+   bool isEmpty();
 
 private:
    Node* head;
