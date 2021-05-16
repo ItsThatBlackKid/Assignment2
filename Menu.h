@@ -28,10 +28,8 @@ public:
     void displayMenu();
     void loadCredits();
 
-    bool checkValidName(std::string player1);
-    std::string inputPlayerName(string player);
 
     private:
-    void playGame(std::array<Player,2> players, GameBoard gameBoard, TileBag tileBag,);
+    void playGame(std::array<Player*,2> players, GameBoard* gameBoard, TileBag* tileBag);
 };
 #endif //ASSIGN_MENU_H

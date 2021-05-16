@@ -1,4 +1,5 @@
 #include "Menu.h"
+#include "QwirleIO.h"
 #define numofPlayers = 2
 
 Menu::Menu()
@@ -62,15 +63,24 @@ void Menu::startNewGame()
     GameBoard* board = new GameBoard();
 
     LinkedList* tilesUnsorted = new LinkedList();
-    std::array<Colour, 6> colours = {'R', 'O', 'Y', 'G', 'B', 'P'}
+    std::array<Colour, 6> colours = {'R', 'O', 'Y', 'G', 'B', 'P'};
 
     for(int i = 0; i < MAX_TILES; i++) {
-        char c = colours[(i %6)];
+        int val = (i %6);
+        char c = colours[val];
 
+        int shape = val + 1;
+
+        Tile* t = new Tile(c, shape);
+
+        tilesUnsorted->addBack(t);
     }
 
-    std::cout << "Let's Play!" << std::endl;
+    TileBag* bag = new TileBag(tilesUnsorted);
 
+    std::array<Player*,2> players = {p1, p2};
+
+    playGame(players, board, bag);
 }
 
 
@@ -90,6 +100,7 @@ void Menu::displayMenu()
 //Load Game
 void Menu::loadGame()
 {
+
 }
 
 //Show Credits

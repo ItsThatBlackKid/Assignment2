@@ -12,6 +12,7 @@ class Tile {
 public:
    Colour colour;
    Shape  shape;
+   Tile(Colour, Shape);
    Tile();
    Tile(Tile& other);
 
