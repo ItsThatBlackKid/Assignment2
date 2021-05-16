@@ -11,7 +11,8 @@ class GameBoard{
     public:
     GameBoard();
     // ~GameBoard();
-    // void TileInsert(char position[2], Tile tile );
+    void TileInsert(char position[2], Tile* tile );
+    bool isLegal(int ROW, int COLUMN, Tile* tile);
     friend std::ostream& operator << (std::ostream& os, const GameBoard g);
     private:
     std::vector<Tile*> gameRow;

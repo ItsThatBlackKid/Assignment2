@@ -7,6 +7,51 @@ GameBoard::GameBoard(){
         
 }
 
+void GameBoard::TileInsert(char position[2], Tile* tile){
+
+    int ROW = int(position[0]-65);
+    int COLUMN = int(position[1]-30);
+
+    int UP = ROW-1;
+    int DOWN = ROW+1;
+    
+    int LEFT = COLUMN-1;
+    int RIGHT = COLUMN+1;
+
+    if(gameBoard[UP][COLUMN]!=nullptr){
+        if(!isLegal(UP,COLUMN, tile)){
+            return;
+        }
+    }
+    if(gameBoard[DOWN][COLUMN]!=nullptr){
+        if(!isLegal(DOWN,COLUMN, tile)){
+            return;
+        }
+    }
+    if(gameBoard[ROW][LEFT]!=nullptr){
+        if(!isLegal(ROW,LEFT, tile)){
+            return;
+        }
+    }
+    if(gameBoard[ROW][RIGHT]!=nullptr){
+        if(!isLegal(ROW,RIGHT, tile)){
+            return;
+        }
+    }
+    else{
+        gameBoard[ROW][COLUMN] = tile;
+    }
+}
+
+bool GameBoard::isLegal(int ROW, int COLUMN, Tile* tile){
+    if(gameBoard[ROW][COLUMN]->colour == tile->colour){
+        return true;
+    }else if(gameBoard[ROW][COLUMN]->shape == tile->shape){
+        return true;
+    }
+    else return false;
+}
+
 std::ostream& operator << (std::ostream& os, const GameBoard g){
     Colour colour;
     char shape;
