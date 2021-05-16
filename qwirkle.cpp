@@ -1,4 +1,4 @@
-
+#include "GameBoard.h"
 #include "LinkedList.h"
 
 #include <iostream>
@@ -8,8 +8,7 @@
 int main(void) {
    LinkedList* list = new LinkedList();
    delete list;
-
-   std::cout << "TODO: Implement Qwirkle!" << std::endl;
-
+   GameBoard* Game = new GameBoard();
+   std::cout<<*Game;
    return EXIT_SUCCESS;
 }
