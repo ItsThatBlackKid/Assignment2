@@ -52,24 +52,29 @@ void Menu::startNewGame()
 
     cout << "Player 1 enter name: " << endl;
     string name;
-    std::getline(cin, name);
+    std::cin>>name;
     p1->setName(name);
-    cout << "Player 1 enter name: " << endl;
+    cout << "Player 2 enter name: " << endl;
     name = "";
-    std::getline(cin, name);
+    std::cin>>name;
     p2->setName(name);
+    std::array<Player*,2> players = {p1, p2};
 
     GameBoard* board = new GameBoard();
-
     LinkedList* tilesUnsorted = new LinkedList();
-    std::array<Colour, 6> colours = {'R', 'O', 'Y', 'G', 'B', 'P'}
+    TileBag* tilebag = new TileBag(tilesUnsorted);
 
-    for(int i = 0; i < MAX_TILES; i++) {
-        char c = colours[(i %6)];
-
+    for(size_t i=0; i!=players.size();i++){
+        players[i]->setTilesInHand(tilebag);
     }
+    playGame(players,board,tilebag);
+    // std::array<Colour, 6> colours = {'R', 'O', 'Y', 'G', 'B', 'P'};
 
-    std::cout << "Let's Play!" << std::endl;
+    // for(int i = 0; i < MAX_TILES; i++) {
+    //     char c = colours[(i %6)];
+
+    // }
+
 
 }
 
@@ -117,3 +122,21 @@ void Menu::loadCredits()
          << std::endl;
     cout << "----------------------------------" << std::endl;
 }
+ void Menu::playGame(std::array<Player*,2> players, GameBoard* gameBoard, TileBag* tileBag){
+    std::cout << "Let's Play!" << std::endl;
+    std::string playerInstruction;
+    std::cout<<players[0]->getHand();
+    std::cin>>playerInstruction;
+    if(playerInstruction.compare(0, 6, "place ")==0 && playerInstruction.compare(9, 3, "at ")==0){
+
+    }else if(playerInstruction.compare(0,8,"replace ")==0){
+        
+    }else if(playerInstruction.compare(0,5,"save ")==0){
+        
+    }else if(playerInstruction.compare(0,5,"quit ")==0){
+        
+    }
+    else{
+        std::cout<<"Invalid command"<<std::endl;
+    }
+ }

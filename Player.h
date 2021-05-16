@@ -4,6 +4,7 @@
 
 #include "Tile.h"
 #include "LinkedList.h"
+#include "TileBag.h"
 
 #include <string>
 #include <fstream>
@@ -22,7 +23,7 @@ public:
     void setScore(int Score);
 
     LinkedList *getHand();
-    void setTilesInHand(LinkedList *hand);
+    void setTilesInHand(TileBag *hand);
 
     string getName();
     void setName(string name);

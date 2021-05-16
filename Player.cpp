@@ -1,6 +1,9 @@
 #include "Player.h"
 
 
+Player::Player(){
+    
+}
 Player::Player(string name, LinkedList *tilesInHand)
 {
     this->name = name;
@@ -27,9 +30,11 @@ void Player::setScore(int score)
     this->score = score;
 }
 
-void Player::setTilesInHand(LinkedList *hand)
+void Player::setTilesInHand(TileBag *hand)
 {
-    this->hand = hand;
+    for(int i=0;i<6;i++){
+    this->hand->addFront(hand->get(i));
+    }
 }
 
 void Player::setName(string name)
@@ -41,4 +46,5 @@ ofstream& operator << (ofstream& of, const Player& p) {
     of << p.name << endl;
     of << p.score << endl;
     of << p.hand;
+    return of;
 }
