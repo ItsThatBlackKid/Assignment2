@@ -15,6 +15,7 @@ using std::endl;
 class Player
 {
 public:
+    Player();
     Player(string name, LinkedList* hand);
 
     int getScore();

@@ -3,8 +3,11 @@
 
 #include <random>
 #include <stdexcept>
+#include <fstream>
 
 #include "LinkedList.h"
+
+#define MAX_TILES 108
 
 class TileBag
 {
@@ -15,8 +18,10 @@ public:
     // returns a copy of the tile object
     Tile *get(int i);
 
+    LinkedList* getList();
 
     int size();
+    friend ofstream& operator << (ofstream& of, TileBag& tileBag);
 
 private:
     LinkedList *list;

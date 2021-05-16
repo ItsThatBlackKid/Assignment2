@@ -1,6 +1,6 @@
 #include "TileBag.h"
 
-TileBag::TileBag(LinkedList *list)
+TileBag::TileBag(LinkedList* list)
 {
     this->list = list;
     shuffle();
@@ -35,4 +35,15 @@ Tile* TileBag::get(int i) {
 
 int TileBag::size() {
     return list->getSize();
+}
+
+LinkedList* TileBag::getList() {
+    return list;
+}
+
+ofstream& operator << (ofstream& of, TileBag& tileBag) {
+    LinkedList& list = *tileBag.getList();
+
+    of << list;
+    return of;
 }

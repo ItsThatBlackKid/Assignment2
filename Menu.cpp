@@ -37,29 +37,6 @@ void Menu::runGame()
         break;
     }
     
-    if (std::stoi(playerInput) == 1)
-    {
-        startNewGame();
-    }
-    
-    else
-    {
-        if (std::stoi(playerInput) == 2)
-        {
-            loadGame();
-        }
-         
-        else if (std::stoi(playerInput) == 3)
-        {
-            loadCredits();
-        }
-        
-        if (std::stoi(playerInput) == 4)
-        {
-
-            std::cout << "Goodbye" << std::flush;
-        }
-    }
 }
 
 //Start the New Game
@@ -67,51 +44,36 @@ void Menu::startNewGame()
 {
     //Define 2 Player Game
 
-    Player p1 = new Player()
+    
     cout << "\nStarting a New Game" << std::endl;
 
-    playerName[0] = inputPlayerName(1);
-    playerName[1] = inputPlayerName(2);
+    Player* p1 = new Player();
+    Player* p2 = new Player();
+
+    cout << "Player 1 enter name: " << endl;
+    string name;
+    std::getline(cin, name);
+    p1->setName(name);
+    cout << "Player 1 enter name: " << endl;
+    name = "";
+    std::getline(cin, name);
+    p2->setName(name);
+
+    GameBoard* board = new GameBoard();
+
+    LinkedList* tilesUnsorted = new LinkedList();
+    std::array<Colour, 6> colours = {'R', 'O', 'Y', 'G', 'B', 'P'}
+
+    for(int i = 0; i < MAX_TILES; i++) {
+        char c = colours[(i %6)];
+
+    }
 
     std::cout << "Let's Play!" << std::endl;
+
 }
 
-//Check if Player Name is valid via regex
-bool Menu::checkValidName(std::string player)
-{
-    bool outcome = false;
-    //Regex for Uppercase Characters
-    std::regex name("[A-Z]");
-    if (std::regex_match(player, name))
-    {
-        outcome = true;
-    }
-    return outcome;
-}
 
-//Inputting Player Name
-string Menu::inputPlayerName(string player)
-{
-    string player = "";
-    bool check = true;
-    do
-    {
-        if (check)
-        {
-            cout << "\nEnter a name for player 1 (uppercase characters only)" << player << std::endl;
-            cout << "> " << std::flush;
-            std::getline(std::cin, player);
-            check = false;
-        }
-        else if (!checkValidName(player))
-        {
-            cout << "Please use Uppercase Characters only" << std::endl;
-            cout << "> " << std::flush;
-            std::getline(std::cin, player);
-        }
-    } while (!checkValidName(player));
-    return player;
-}
 
 //Displays the Menu
 void Menu::displayMenu()
