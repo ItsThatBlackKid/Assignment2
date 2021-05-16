@@ -15,24 +15,45 @@ void Menu::runGame()
     //Prints out Menu
     displayMenu();
     cin >> playerInput;
+    int input = stoi(playerInput);
+    switch (input)
+    {
     //Player Input's "1" - Starts New Game
+    case 1:
+        startNewGame();
+        break;
+    //Player Input's "2" - Load Game
+    case 2:
+        loadGame();
+        break;
+    //Player Input's "4" - Quit Game
+    case 3:
+        loadCredits();
+        break;
+    case 4:
+
+        exit(0);
+    default:
+        break;
+    }
+    
     if (std::stoi(playerInput) == 1)
     {
         startNewGame();
     }
-    //Player Input's "2" - Load Game
+    
     else
     {
         if (std::stoi(playerInput) == 2)
         {
             loadGame();
         }
-        //Player Input's "3" - Credits (Show's Student Information)
+         
         else if (std::stoi(playerInput) == 3)
         {
             loadCredits();
         }
-        //Player Input's "4" - Quit Game
+        
         if (std::stoi(playerInput) == 4)
         {
 
@@ -45,7 +66,8 @@ void Menu::runGame()
 void Menu::startNewGame()
 {
     //Define 2 Player Game
-    string playerName[numofPlayers];
+
+    Player p1 = new Player()
     cout << "\nStarting a New Game" << std::endl;
 
     playerName[0] = inputPlayerName(1);

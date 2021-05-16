@@ -15,7 +15,7 @@ public:
    ~LinkedList();
 
    // return size of the list
-   int size();
+   int getSize();
    
    // clear the list
    void clear();
@@ -24,11 +24,26 @@ public:
    //add to the back of the list
    void addBack(Tile* tile);
 
-   friend ofstream& operator << (ofstream& of, const LinkedList& list);
+   void removeFront();
+
+   // removes Node at position i. DOES NOT DELETE THE NODE
+   void remove(int i);
+
+   // returns copy of node at i   
+   Node* get(int i);
+
+   // returns copy of head
+   Node* getHead();
+
+   // checks if list is empty
+   bool isEmpty();
+
+   friend ofstream& operator << (ofstream& of, LinkedList& list);
 
 private:
    Node* head;
    Node* tail;
+   int size;
 };
 
 #endif // ASSIGN2_LINKEDLIST_H
