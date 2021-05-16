@@ -4,6 +4,10 @@
 
 #include "Node.h"
 
+#include <fstream>
+
+using std::ofstream;
+using std::ifstream;
 class LinkedList {
 public:
 
@@ -19,7 +23,8 @@ public:
    void addFront(Tile* tile);
    //add to the back of the list
    void addBack(Tile* tile);
-   
+
+   friend ofstream& operator << (ofstream& of, const LinkedList& list);
 
 private:
    Node* head;

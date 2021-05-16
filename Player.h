@@ -4,27 +4,35 @@
 
 #include "Tile.h"
 #include "LinkedList.h"
-#include <string>
-using namespace std;
 
+#include <string>
+#include <fstream>
+
+using std::string;
+using std::ifstream;
+using std::ofstream;
+using std::endl;
 class Player
 {
 public:
-    Player(string name, int Score, LinkedList *TilesInHand);
+    Player(string name, LinkedList* hand);
 
     int getScore();
     void setScore(int Score);
 
-    LinkedList *getTilesInHand();
-    void setTilesInHand(LinkedList *TilesInHand);
+    LinkedList *getHand();
+    void setTilesInHand(LinkedList *hand);
 
     string getName();
     void setName(string name);
 
+    friend ofstream& operator << (ofstream& of, const Player& p);
+    friend ifstream& operator >> (ifstream& in, Player* p);
+
 private:
     string name;
-    int Score;
-    LinkedList *TilesInHand;
+    int score;
+    LinkedList *hand;
 };
 
 #endif // ASSIGN2_NODE_H

@@ -47,3 +47,10 @@ void LinkedList::addBack(Tile* tile) {
       back = tail;
    }
 }
+
+ofstream& operator << (ofstream& of, const LinkedList& list) {
+   int count = 0; 
+   while(count < list.size) {
+
+   }
+}

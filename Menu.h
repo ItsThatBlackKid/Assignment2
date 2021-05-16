@@ -5,26 +5,23 @@
 #include "LinkedList.h"
 #include "Node.h"
 #include <regex>
+
+using std::cout;
+using std::cin;
 using std::string;
-class Menu {
+class Menu
+{
 
 public:
-Menu();
-void runGame();
-void startNewGame();
-void loadGame();
+    Menu();
+    void runGame();
+    void startNewGame();
+    void loadGame();
 
-void displayMenu();
-void loadCredits();
+    void displayMenu();
+    void loadCredits();
 
-bool checkValidName(std::string player1);
-std::string inputPlayerName(string player);
-
-
-
-
-
-
-
+    bool checkValidName(std::string player1);
+    std::string inputPlayerName(string player);
 };
 #endif //ASSIGN_MENU_H
