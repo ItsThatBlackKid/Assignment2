@@ -24,7 +24,7 @@ public:
    Shape getShape();
 
    // overloaded terminal output operator
-   friend ostream& operator<<(ostream& os, const Tile& t);
+   friend ostream& operator << (ostream& os, const Tile& t);
    // overloaded file output operator
    friend ofstream& operator<<(ofstream& of, const Tile& t); 
    // overloaded file input operator

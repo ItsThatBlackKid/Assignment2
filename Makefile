@@ -14,6 +14,9 @@ test-linkedlist: Tile.o Node.o LinkedList.o testLinkedList.o
 test-tilebag: Tile.o Node.o LinkedList.o TileBag.o testTileBag.o
 	g++  -Wall -Werror -std=c++14 -g -O -o $@ $^
 
+test-tile: Tile.o testTile.o
+	g++  -Wall -Werror -std=c++14 -g -O -o $@ $^
+
 
 %.o: %.cpp
 	g++ -Wall -Werror -std=c++14 -g -O -c $^
