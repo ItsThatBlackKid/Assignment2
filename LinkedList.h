@@ -1,4 +1,3 @@
-
 #ifndef ASSIGN2_LINKEDLIST_H
 #define ASSIGN2_LINKEDLIST_H
 
@@ -11,7 +10,7 @@ public:
    ~LinkedList();
 
    // return size of the list
-   int size();
+   int getSize();
    
    // clear the list
    void clear();
@@ -21,6 +20,9 @@ public:
    void addBack(Tile* tile);
 
    void removeFront();
+
+   // removes Node at position i. DOES NOT DELETE THE NODE
+   void remove(int i);
 
    // returns copy of node at i   
    Node* get(int i);
@@ -34,6 +36,7 @@ public:
 private:
    Node* head;
    Node* tail;
+   int size;
 };
 
 #endif // ASSIGN2_LINKEDLIST_H

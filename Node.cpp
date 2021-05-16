@@ -14,9 +14,3 @@ Node::~Node() {
    delete tile;
 }
 
-Node::Node(Node& other)
-{
-   // TODO
-   this->tile = new Tile(*other.tile);
-   this->next = new Node(*other.next);
-}
