@@ -6,6 +6,10 @@ TileBag::TileBag(LinkedList *list)
     shuffle();
 }
 
+TileBag::~TileBag() {
+    
+}
+
 void TileBag::shuffle()
 {
     LinkedList *newList = new LinkedList();

@@ -25,9 +25,9 @@ void LinkedList::clear()
 
    while (head != nullptr)
    {
-      Node *n = head->next;
+      Node *curr = head->next;
       delete head;
-      head = n;
+      head = curr;
    }
 
    size = 0;

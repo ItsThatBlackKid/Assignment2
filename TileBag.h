@@ -10,7 +10,9 @@ class TileBag
 {
 public:
     TileBag(LinkedList *list);
+    ~TileBag();
 
+    // returns a copy of the tile object
     Tile *get(int i);
 
 
