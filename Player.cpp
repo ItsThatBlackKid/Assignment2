@@ -1,39 +1,44 @@
-#include "LinkedList.h"
 #include "Player.h"
-#include <string>
 
-Player::Player(string name, int Score, LinkedList *TilesInHand)
+
+Player::Player(string name, LinkedList *tilesInHand)
 {
     this->name = name;
-    this->Score = Score;
-    this->TilesInHand = TilesInHand;
+    this->score = 0;
+    this->hand = tilesInHand;
 }
 
 int Player::getScore()
 {
-    return Score;
+    return score;
 }
 
-LinkedList *Player::getTilesInHand()
+LinkedList *Player::getHand()
 {
-    return TilesInHand;
+    return hand;
 }
 
 string Player::getName()
 {
     return name;
 }
-void Player::setScore(int Score)
+void Player::setScore(int score)
 {
-    this->Score = Score;
+    this->score = score;
 }
 
-void Player::setTilesInHand(LinkedList *TilesInHand)
+void Player::setTilesInHand(LinkedList *hand)
 {
-    this->TilesInHand = TilesInHand;
+    this->hand = hand;
 }
 
 void Player::setName(string name)
 {
     this->name = name;
+}
+
+ofstream& operator << (ofstream& of, const Player& p) {
+    of << p.name << endl;
+    of << p.score << endl;
+    of << p.hand;
 }

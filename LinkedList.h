@@ -3,6 +3,10 @@
 
 #include "Node.h"
 
+#include <fstream>
+
+using std::ofstream;
+using std::ifstream;
 class LinkedList {
 public:
 
@@ -32,6 +36,8 @@ public:
 
    // checks if list is empty
    bool isEmpty();
+
+   friend ofstream& operator << (ofstream& of, LinkedList& list);
 
 private:
    Node* head;
