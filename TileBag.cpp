@@ -54,6 +54,18 @@ void TileBag::setList(LinkedList* list) {
     this->list = list;
 } 
 
+void TileBag::add(Tile* t) {
+    list->addBack(t);
+}
+
+void TileBag::remove(int i) {
+    list->remove(i);
+}
+
+bool TileBag::isEmpty() {
+    return list->isEmpty();
+}
+
 ofstream &operator<<(ofstream &of, TileBag &tileBag)
 {
     LinkedList &list = *tileBag.getList();
@@ -67,4 +79,5 @@ ifstream &operator>>(ifstream &in, TileBag *bag)
     LinkedList *list = new LinkedList();
     in >> list;
     bag->setList(list);
+    return in;
 }

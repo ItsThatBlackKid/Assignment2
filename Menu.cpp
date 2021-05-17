@@ -1,5 +1,5 @@
 #include "Menu.h"
-#include "QwirleIO.h"
+#include "QwirkleIO.h"
 #define numofPlayers = 2
 
 Menu::Menu()
@@ -10,34 +10,35 @@ Menu::Menu()
 //Runs the Game + Takes Players Input
 void Menu::runGame()
 {
-    string playerInput = "";
-    cout << "Welcome to Qwirkle!" << std::endl;
-    cout << "-------------------" << std::endl;
-    //Prints out Menu
-    displayMenu();
-    cin >> playerInput;
-    int input = stoi(playerInput);
-    switch (input)
+    while (!cin.eof())
     {
-    //Player Input's "1" - Starts New Game
-    case 1:
-        startNewGame();
-        break;
-    //Player Input's "2" - Load Game
-    case 2:
-        loadGame();
-        break;
-    //Player Input's "4" - Quit Game
-    case 3:
-        loadCredits();
-        break;
-    case 4:
-        cout << "Goodbye" << endl;
-        exit(0);
-    default:
-        break;
+        string playerInput = "";
+        cout << "Welcome to Qwirkle!" << std::endl;
+        cout << "-------------------" << std::endl;
+        //Prints out Menu
+        displayMenu();
+        cin >> playerInput;
+        int input = stoi(playerInput);
+        switch (input)
+        {
+            //Player Input's "1" - Starts New Game
+        case 1:
+            startNewGame();
+            break;
+            //Player Input's "2" - Load Game
+        case 2:
+            loadGame();
+            break;
+            //Player Input's "4" - Quit Game
+        case 3:
+            loadCredits();
+            break;
+        default:
+            cout << "Goodbye" << endl;
+            exit(0);
+            break;
+        }
     }
-    
 }
 
 //Start the New Game
@@ -45,62 +46,51 @@ void Menu::startNewGame()
 {
     //Define 2 Player Game
 
-    
     cout << "\nStarting a New Game" << std::endl;
 
-    Player* p1 = new Player();
-    Player* p2 = new Player();
+    Player *p1 = new Player();
+    Player *p2 = new Player();
 
     cout << "Player 1 enter name: " << endl;
     string name;
-    std::cin>>name;
+    std::cin >> name;
     p1->setName(name);
     cout << "Player 2 enter name: " << endl;
     name = "";
-    std::cin>>name;
+    std::cin >> name;
     p2->setName(name);
-    std::array<Player*,2> players = {p1, p2};
+    std::array<Player *, 2> players = {p1, p2};
+    cin.ignore();
 
-    GameBoard* board = new GameBoard();
-    LinkedList* tilesUnsorted = new LinkedList();
-<<<<<<< HEAD
-    TileBag* tilebag = new TileBag(tilesUnsorted);
+    GameBoard *board = new GameBoard();
+    LinkedList *tilesUnsorted = new LinkedList();
 
-    for(size_t i=0; i!=players.size();i++){
-        players[i]->setTilesInHand(tilebag);
-=======
     std::array<Colour, 6> colours = {'R', 'O', 'Y', 'G', 'B', 'P'};
 
-    for(int i = 0; i < MAX_TILES; i++) {
-        int val = (i %6);
+    for (int i = 0; i < MAX_TILES; i++)
+    {
+        int val = (i % 6);
         char c = colours[val];
 
         int shape = val + 1;
 
-        Tile* t = new Tile(c, shape);
+        Tile *t = new Tile(c, shape);
 
         tilesUnsorted->addBack(t);
->>>>>>> feature-saveload
     }
-    playGame(players,board,tilebag);
-    // std::array<Colour, 6> colours = {'R', 'O', 'Y', 'G', 'B', 'P'};
 
-    // for(int i = 0; i < MAX_TILES; i++) {
-    //     char c = colours[(i %6)];
+    TileBag *tilebag = new TileBag(tilesUnsorted);
+    cout << "Tile Bag created" << endl;
 
-    // }
+    for (Player *p : players)
+    {
+        p->setTilesInHand(tilebag);
+    }
 
-<<<<<<< HEAD
-=======
-    TileBag* bag = new TileBag(tilesUnsorted);
->>>>>>> feature-saveload
+    cout << "User created" << endl;
 
-    std::array<Player*,2> players = {p1, p2};
-
-    playGame(players, board, bag);
+    playGame(players, board, tilebag);
 }
-
-
 
 //Displays the Menu
 void Menu::displayMenu()
@@ -117,7 +107,6 @@ void Menu::displayMenu()
 //Load Game
 void Menu::loadGame()
 {
-
 }
 
 //Show Credits
@@ -145,21 +134,85 @@ void Menu::loadCredits()
          << std::endl;
     cout << "----------------------------------" << std::endl;
 }
- void Menu::playGame(std::array<Player*,2> players, GameBoard* gameBoard, TileBag* tileBag){
+void Menu::playGame(std::array<Player *, 2> players, GameBoard *gameBoard, TileBag *tileBag)
+{
     std::cout << "Let's Play!" << std::endl;
-    std::string playerInstruction;
-    std::cout<<players[0]->getHand();
-    std::cin>>playerInstruction;
-    if(playerInstruction.compare(0, 6, "place ")==0 && playerInstruction.compare(9, 3, "at ")==0){
+    bool gameEnd = false;
+    while (!gameEnd)
+    {
+        int pCount = 0;
+        for (Player *p : players)
+        {
+            pCount++;
+            std::cout << *p->getHand() << endl;
+            string playerInstruction = " ";
+            bool turnEnd = false;
 
-    }else if(playerInstruction.compare(0,8,"replace ")==0){
-        
-    }else if(playerInstruction.compare(0,5,"save ")==0){
-        
-    }else if(playerInstruction.compare(0,5,"quit ")==0){
-        
+            cout << *gameBoard;
+
+            while (!turnEnd)
+            {
+                cout << "> ";
+                getline(cin, playerInstruction);
+                cout << "player input: " << playerInstruction << endl;
+                regex e("[A-Z][0-9]");
+
+                if (playerInstruction.compare(0, 6, "place ") == 0 && playerInstruction.compare(9, 3, "at ") == 0)
+                {
+                    string tile = playerInstruction.substr(6, 2);
+                    std::transform(tile.begin(), tile.end(), tile.begin(), ::toupper);
+                    string loc = playerInstruction.substr(12, 2);
+                    std::transform(loc.begin(), loc.end(), loc.begin(), ::toupper);
+
+                    // check that the play was successful, otherwise print an error message
+                    if (regex_match(tile, e) && regex_match(loc, e))
+                    {
+                        turnEnd = p->playTile(gameBoard, loc, tile);
+                    }
+                    else
+                    {
+                        cout << "Sorry, unable to make that move" << endl;
+                    }
+                }
+                else if (playerInstruction.compare(0, 8, "replace ") == 0)
+                {
+                    string tile = playerInstruction.substr(8, 2);
+                    if (regex_match(tile, e))
+                    {
+                        p->replaceTile(tileBag, tile);
+                    }
+                    else
+                    {
+                        cout << "Sorry,  unable to make that move";
+                    }
+                }
+                else if (playerInstruction.compare(0, 5, "save ") == 0)
+                {
+                    string filename;
+                    cout << "Enter filename: " << endl;
+                    std::getline(cin, filename);
+                    saveGameState(players, gameBoard, tileBag, filename, (bool)(pCount % 2));
+                }
+                else if (playerInstruction.compare(0, 5, "quit ") == 0)
+                {
+                    gameEnd = true;
+                }
+                else
+                {
+                    std::cout << "Invalid command" << std::endl;
+                }
+
+                // set the exit condition
+                if (tileBag->isEmpty() && !gameEnd)
+                {
+                    {
+                        if (p->getHand()->isEmpty())
+                        {
+                            gameEnd = true;
+                        }
+                    }
+                }
+            }
+        }
     }
-    else{
-        std::cout<<"Invalid command"<<std::endl;
-    }
- }
+}

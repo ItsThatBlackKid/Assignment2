@@ -7,7 +7,9 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#include <iostream>
 
+using std::ostream;
 using std::ofstream;
 using std::ifstream;
 using std::string;
@@ -45,6 +47,7 @@ public:
    // checks if list is empty
    bool isEmpty();
 
+   friend ostream& operator << (ostream& os, LinkedList& list);
    friend ofstream& operator << (ofstream& of, LinkedList& list);
    friend ifstream& operator >> (ifstream& in, LinkedList* list);
 

@@ -2,7 +2,6 @@
 #define ASSIGN2_MENU_H
 #include <iostream>
 
-#include "Menu.h"
 #include "LinkedList.h"
 #include "Player.h"
 #include "TileBag.h"
@@ -14,6 +13,8 @@
 using std::cout;
 using std::cin;
 using std::string;
+using std::regex;
+using std::regex_match;
 
 class Menu
 {

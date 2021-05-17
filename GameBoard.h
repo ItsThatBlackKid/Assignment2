@@ -20,16 +20,17 @@ class GameBoard{
     public:
     GameBoard();
     // ~GameBoard();
-    void TileInsert(char position[2], Tile* tile );
+    void TileInsert(const char* position, Tile* tile );
     bool isLegal(int ROW, int COLUMN, Tile* tile);
 
     std::vector<std::vector<Tile*>> getGameBoard();
 
     void placeTile(Tile* tile, string location);
 
-    friend std::ostream& operator << (std::ostream& os, const GameBoard g);
+    friend std::ostream& operator << (std::ostream& os, const GameBoard& g);
     friend ofstream& operator << (ofstream& of, GameBoard& g);
     friend ifstream& operator >> (ifstream& in, GameBoard* g);
+
     private:
     std::vector<Tile*> gameRow;
     std::vector<std::vector<Tile*>> gameBoard;

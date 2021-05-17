@@ -22,6 +22,11 @@ public:
     LinkedList* getList();
     void setList(LinkedList* list);
 
+    void add(Tile* t);
+    void remove(int i);
+
+    bool isEmpty();
+
     int size();
     friend ofstream& operator << (ofstream& of, TileBag& tileBag);
     friend ifstream& operator >> (ifstream& in, TileBag* bag);

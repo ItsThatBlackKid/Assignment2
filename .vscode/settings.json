@@ -48,6 +48,10 @@
         "cstring": "cpp",
         "ctime": "cpp",
         "map": "cpp",
-        "regex": "cpp"
+        "regex": "cpp",
+        "chrono": "cpp",
+        "condition_variable": "cpp",
+        "ratio": "cpp",
+        "shared_mutex": "cpp"
     }
 }

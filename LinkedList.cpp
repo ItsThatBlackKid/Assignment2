@@ -1,6 +1,8 @@
 
 #include "LinkedList.h"
 
+#include <iostream>
+
 LinkedList::LinkedList()
 {
    head = nullptr;
@@ -117,6 +119,16 @@ void LinkedList::remove(int i)
    }
 
    size--;
+}
+
+ostream& operator << (ostream& os, LinkedList& list) {
+   int count = 0; 
+   while(count < list.getSize()) {
+      Tile* t= list.get(count)->tile;
+      os << t->colour << t->shape << ",";
+      count++;
+   }
+   return os;
 }
 
 ofstream& operator << (ofstream& of,  LinkedList& list) {

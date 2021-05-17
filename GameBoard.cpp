@@ -7,9 +7,8 @@ GameBoard::GameBoard()
     gameBoard.assign(MAXIMUM_BOARD_SIZE, gameRow);
 }
 
-void GameBoard::TileInsert(char position[2], Tile *tile)
+void GameBoard::TileInsert(const char* position, Tile *tile)
 {
-
     int ROW = int(position[0] - 65);
     int COLUMN = int(position[1] - 30);
 
@@ -67,7 +66,7 @@ bool GameBoard::isLegal(int ROW, int COLUMN, Tile *tile)
         return false;
 }
 
-std::ostream &operator<<(std::ostream &os, const GameBoard g)
+std::ostream &operator<<(std::ostream &os, const GameBoard& g)
 {
     Colour colour;
     char shape;
@@ -118,7 +117,7 @@ void GameBoard::placeTile(Tile* t, string location) {
     gameBoard.at(row).at(col) = t;
 }
 
-ofstream& operator<<(ofstream& of, GameBoard g) {
+ofstream& operator<<(ofstream& of, GameBoard& g) {
     of << "26,26" << std::endl;
 
     std::vector<std::vector<Tile*>> gb = g.getGameBoard();
@@ -172,4 +171,8 @@ ifstream& operator >> (ifstream& in, GameBoard* g) {
 
     return in;
 
+}
+
+vector<vector<Tile*>> GameBoard::getGameBoard() {
+    return this->gameBoard;
 }

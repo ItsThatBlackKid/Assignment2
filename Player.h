@@ -5,6 +5,7 @@
 #include "Tile.h"
 #include "LinkedList.h"
 #include "TileBag.h"
+#include "GameBoard.h"
 
 #include <string>
 #include <fstream>
@@ -22,8 +23,11 @@ public:
     int getScore();
     void setScore(int Score);
 
-    LinkedList *getHand();
+    LinkedList* getHand();
     void setTilesInHand(TileBag *hand);
+
+    bool playTile(GameBoard* board, string loc, string tile);
+    bool replaceTile(TileBag* bag, string tile);
 
     string getName();
     void setName(string name);
