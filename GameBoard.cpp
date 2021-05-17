@@ -55,6 +55,13 @@ std::ostream &operator<<(std::ostream &os, const GameBoard g)
     return os;
 }
 
+void GameBoard::placeTile(Tile* t, string location) {
+    int row = location[0] - 65;
+    int col = location[1] - '0';
+
+    gameBoard.at(row).at(col) = t;
+}
+
 ofstream& operator<<(ofstream& of, GameBoard g) {
     of << "26,26" << std::endl;
 
@@ -77,4 +84,36 @@ ofstream& operator<<(ofstream& of, GameBoard g) {
 
     of << std::endl;
     return of;
+}
+
+ifstream& operator >> (ifstream& in, GameBoard* g) {
+    // no need to read the shape here
+    char c;
+    in >> c;
+
+    string boardLine = "";
+    std::getline(in, boardLine);
+
+    std::stringstream ss(boardLine);
+
+    vector<string> tiles;
+
+    while(ss.good()) {
+        string substr;
+        getline(ss,substr,',');
+        tiles.push_back(substr);
+    }
+
+    for(string s: tiles) {
+        string t = s.substr(0,s.find('@'));
+        string loc = s.substr(s.find('@') +1);
+
+        Tile* tile = new Tile();
+        tile->colour = t[0];
+        tile->shape = t[1] - '0';
+        g->placeTile(tile, loc);
+    }
+
+    return in;
+
 }

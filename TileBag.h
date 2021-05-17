@@ -12,6 +12,7 @@
 class TileBag
 {
 public:
+    TileBag();
     TileBag(LinkedList *list);
     ~TileBag();
 
@@ -19,9 +20,11 @@ public:
     Tile *get(int i);
 
     LinkedList* getList();
+    void setList(LinkedList* list);
 
     int size();
     friend ofstream& operator << (ofstream& of, TileBag& tileBag);
+    friend ifstream& operator >> (ifstream& in, TileBag* bag);
 
 private:
     LinkedList *list;

@@ -38,7 +38,14 @@ void Player::setName(string name)
 }
 
 ofstream& operator << (ofstream& of, const Player& p) {
-    of << p.name << endl;
+    of << pname << endl;
     of << p.score << endl;
     of << p.hand;
+}
+
+ifstream& operator >> (ifstream& in, Player* player) {
+    in >> player->name;
+    in >> player->score;
+    in >> p->hand;
+    return in;
 }

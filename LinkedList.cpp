@@ -128,3 +128,25 @@ ofstream& operator << (ofstream& of,  LinkedList& list) {
    of << std::endl;
    return of;
 }
+
+ifstream& operator >>  (ifstream& in, LinkedList* list) {
+   string line;
+   std::getline(in, line);
+   stringstream ss(line);
+
+   vector<string>  tiles;
+   while(ss.good()) {
+      string sub;
+      getline(ss,sub, ',');
+      tiles.push_back(sub);
+   }
+
+   Tile* t = new Tile();
+   for(string s: tiles) {
+      t->colour = s[0];
+      t->shape = s[1] - '0';
+      list->addBack(t);
+   }
+
+   return in;
+}

@@ -32,7 +32,7 @@ void Menu::runGame()
         loadCredits();
         break;
     case 4:
-
+        cout << "Goodbye" << endl;
         exit(0);
     default:
         break;

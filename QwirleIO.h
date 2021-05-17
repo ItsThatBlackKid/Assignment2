@@ -10,4 +10,5 @@
 #include "TileBag.h"
 
 void saveGameState(Player** players,GameBoard gameBoard, TileBag tileBag, std::string filename);
+void loadGameState(Player** players, GameBoard gameBoard, TileBag tileBag, std::string filename);
 #endif
