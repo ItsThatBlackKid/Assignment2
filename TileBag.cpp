@@ -1,13 +1,18 @@
 #include "TileBag.h"
 
-TileBag::TileBag(LinkedList* list)
+TileBag::TileBag()
+{
+    this->list = nullptr;
+}
+
+TileBag::TileBag(LinkedList *list)
 {
     this->list = list;
     shuffle();
 }
 
-TileBag::~TileBag() {
-    
+TileBag::~TileBag()
+{
 }
 
 void TileBag::shuffle()
@@ -25,25 +30,41 @@ void TileBag::shuffle()
     this->list = newList;
 }
 
-Tile* TileBag::get(int i) {
-    if(i >= size() || i < 0) {
+Tile *TileBag::get(int i)
+{
+    if (i >= size() || i < 0)
+    {
         throw std::out_of_range("Error: index is out of range");
     }
 
     return list->get(i)->tile;
 }
 
-int TileBag::size() {
+int TileBag::size()
+{
     return list->getSize();
 }
 
-LinkedList* TileBag::getList() {
+LinkedList *TileBag::getList()
+{
     return list;
 }
 
-ofstream& operator << (ofstream& of, TileBag& tileBag) {
-    LinkedList& list = *tileBag.getList();
+void TileBag::setList(LinkedList* list) {
+    this->list = list;
+} 
+
+ofstream &operator<<(ofstream &of, TileBag &tileBag)
+{
+    LinkedList &list = *tileBag.getList();
 
     of << list;
     return of;
+}
+
+ifstream &operator>>(ifstream &in, TileBag *bag)
+{
+    LinkedList *list = new LinkedList();
+    in >> list;
+    bag->setList(list);
 }

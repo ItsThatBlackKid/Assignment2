@@ -4,9 +4,17 @@
 #include "Node.h"
 
 #include <fstream>
+#include <string>
+#include <sstream>
+#include <vector>
 
 using std::ofstream;
 using std::ifstream;
+using std::string;
+using std::stringstream;
+
+using std::vector;
+
 class LinkedList {
 public:
 
@@ -38,6 +46,7 @@ public:
    bool isEmpty();
 
    friend ofstream& operator << (ofstream& of, LinkedList& list);
+   friend ifstream& operator >> (ifstream& in, LinkedList* list);
 
 private:
    Node* head;
