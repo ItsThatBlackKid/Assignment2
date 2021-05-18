@@ -40,6 +40,7 @@ public:
 
    // returns copy of node at i   
    Node* get(int i);
+   Tile* get(string tile);
 
    // returns copy of head
    Node* getHead();

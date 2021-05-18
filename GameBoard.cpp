@@ -7,10 +7,10 @@ GameBoard::GameBoard()
     gameBoard.assign(MAXIMUM_BOARD_SIZE, gameRow);
 }
 
-void GameBoard::TileInsert(const char* position, Tile *tile)
+int GameBoard::TileInsert(const char *position, Tile *tile)
 {
     int ROW = int(position[0] - 65);
-    int COLUMN = int(position[1] - 30);
+    int COLUMN = int(position[1] - '0');
 
     int UP = ROW - 1;
     int DOWN = ROW + 1;
@@ -18,58 +18,34 @@ void GameBoard::TileInsert(const char* position, Tile *tile)
     int LEFT = COLUMN - 1;
     int RIGHT = COLUMN + 1;
 
-    if (gameBoard[UP][COLUMN] != nullptr)
-    {
-        if (!isLegal(UP, COLUMN, tile))
-        {
-            return;
-        }
-    }
-    if (gameBoard[DOWN][COLUMN] != nullptr)
-    {
-        if (!isLegal(DOWN, COLUMN, tile))
-        {
-            return;
-        }
-    }
-    if (gameBoard[ROW][LEFT] != nullptr)
-    {
-        if (!isLegal(ROW, LEFT, tile))
-        {
-            return;
-        }
-    }
-    if (gameBoard[ROW][RIGHT] != nullptr)
-    {
-        if (!isLegal(ROW, RIGHT, tile))
-        {
-            return;
-        }
-    }
-    else
+    bool qwirkle = false;
+
+    int playVal = -1;
+
+    if (gameBoard[ROW][COLUMN] == nullptr)
     {
         gameBoard[ROW][COLUMN] = tile;
+        std::cout << "error happens in qwirkle" << std::endl;
+        playVal = 0;
+        qwirkle = isQwirkle(UP, COLUMN, 0, tile);
+        qwirkle = qwirkle || isQwirkle(ROW, RIGHT, 1, tile);
+        qwirkle = qwirkle || isQwirkle(DOWN, COLUMN, 2, tile);
+        qwirkle = qwirkle || isQwirkle(COLUMN, LEFT, 3, tile);
     }
+
+    if (qwirkle)
+    {
+        playVal = 1;
+    }
+
+    return playVal;
 }
 
-bool GameBoard::isLegal(int ROW, int COLUMN, Tile *tile)
-{
-    if (gameBoard[ROW][COLUMN]->colour == tile->colour)
-    {
-        return true;
-    }
-    else if (gameBoard[ROW][COLUMN]->shape == tile->shape)
-    {
-        return true;
-    }
-    else
-        return false;
-}
-
-std::ostream &operator<<(std::ostream &os, const GameBoard& g)
+std::ostream &operator<<(std::ostream &os, const GameBoard &g)
 {
     Colour colour;
     char shape;
+    // draw the columns
     for (int i = 0; i < MAXIMUM_BOARD_SIZE; i++)
     {
 
@@ -89,6 +65,8 @@ std::ostream &operator<<(std::ostream &os, const GameBoard& g)
         os << "---";
     }
     os << std::endl;
+
+    // draw each row
     for (size_t i = 0; i < g.gameBoard.size(); i++)
     {
         os << char(i + 65);
@@ -110,25 +88,150 @@ std::ostream &operator<<(std::ostream &os, const GameBoard& g)
     return os;
 }
 
-void GameBoard::placeTile(Tile* t, string location) {
+void GameBoard::placeTile(Tile *t, string location)
+{
     int row = location[0] - 65;
     int col = location[1] - '0';
 
     gameBoard.at(row).at(col) = t;
 }
 
-ofstream& operator<<(ofstream& of, GameBoard& g) {
+bool GameBoard::isQwirkle(int row, int column, int direction, Tile *t)
+{
+    bool qwirkle = false;
+    switch (direction)
+    {
+
+    // UP
+    case 0:
+    {
+        int seqCount = 1;
+        for (int i = seqCount; i < 5; i++)
+        {
+            row -= 1;
+            if (row >= 0)
+            {
+                if (gameBoard[row][column] != nullptr)
+                {
+                    if (doesMatch(row, column, t))
+                    {
+                        seqCount++;
+                    }
+                }
+            }
+        }
+
+        // remember this column if we have qwirkle
+        if (seqCount >= 6)
+        {
+            qwirkle = true;
+            qwirkleCols.push_back(column);
+        }
+        break;
+    }
+    case 1:
+    {
+        int seqCount = 1;
+        for (int i = seqCount; i < 5; i++)
+        {
+            column += 1;
+            if (column < MAXIMUM_BOARD_SIZE)
+            {
+                if (gameBoard[row][column] != nullptr)
+                {
+                    if (doesMatch(row, column, t))
+                    {
+                        seqCount++;
+                    }
+                }
+            }
+        }
+        if (seqCount >= 6)
+        {
+            qwirkle = true;
+            qwirkleRows.push_back(row);
+        }
+        break;
+    }
+    case 2:
+    {
+        int seqCount = 1;
+        for (int i = seqCount; i < 5; i++)
+        {
+            row += 1;
+            if (row < MAXIMUM_BOARD_SIZE)
+            {
+                if (gameBoard[row][column] != nullptr)
+                {
+                    if (doesMatch(row, column, t))
+                    {
+                        seqCount++;
+                    }
+                }
+            }
+        }
+
+        if (seqCount >= 6)
+        {
+            qwirkle = true;
+            qwirkleCols.push_back(column);
+        }
+        break;
+    }
+    case 3:
+    {
+        int seqCount = 1;
+        for (int i = 0; i < seqCount; i++)
+        {
+            column -= 1;
+            if (column >= 0)
+            {
+                if (gameBoard[row][column] != nullptr)
+                {
+                    if (doesMatch(row, column, t))
+                    {
+                        seqCount++;
+                    }
+                }
+            }
+        }
+
+        if (seqCount >= 6)
+        {
+            qwirkle = true;
+            qwirkleRows.push_back(row);
+        }
+        break;
+    }
+    default:
+        break;
+    }
+
+    return qwirkle;
+}
+
+bool GameBoard::doesMatch(int row, int column, Tile *t)
+{
+    return gameBoard[row][column]->shape == t->shape && gameBoard[row][column]->colour == t->colour;
+}
+
+ofstream &operator<<(ofstream &of, GameBoard &g)
+{
     of << "26,26" << std::endl;
 
-    std::vector<std::vector<Tile*>> gb = g.getGameBoard();
+    std::vector<std::vector<Tile *>> gb = g.getGameBoard();
     bool checked = false;
 
-    for(size_t i = 0; i < g.getGameBoard().size(); i++) {
+    for (size_t i = 0; i < g.getGameBoard().size(); i++)
+    {
         char row = (i + 65);
-        for(size_t j = 0; j < gb.at(i).size(); j++) {
-            Tile* t = gb.at(i).at(j);
-            if( t != nullptr) {
-                if(checked) {
+        for (size_t j = 0; j < gb.at(i).size(); j++)
+        {
+            Tile *t = gb.at(i).at(j);
+            if (t != nullptr)
+            {
+                if (checked)
+                {
                     of << ", ";
                 }
                 of << t << "@" << row << j << "";
@@ -141,7 +244,8 @@ ofstream& operator<<(ofstream& of, GameBoard& g) {
     return of;
 }
 
-ifstream& operator >> (ifstream& in, GameBoard* g) {
+ifstream &operator>>(ifstream &in, GameBoard *g)
+{
     // no need to read the shape here
     char c;
     in >> c;
@@ -153,26 +257,28 @@ ifstream& operator >> (ifstream& in, GameBoard* g) {
 
     vector<string> tiles;
 
-    while(ss.good()) {
+    while (ss.good())
+    {
         string substr;
-        getline(ss,substr,',');
+        getline(ss, substr, ',');
         tiles.push_back(substr);
     }
 
-    for(string s: tiles) {
-        string t = s.substr(0,s.find('@'));
-        string loc = s.substr(s.find('@') +1);
+    for (string s : tiles)
+    {
+        string t = s.substr(0, s.find('@'));
+        string loc = s.substr(s.find('@') + 1);
 
-        Tile* tile = new Tile();
+        Tile *tile = new Tile();
         tile->colour = t[0];
         tile->shape = t[1] - '0';
         g->placeTile(tile, loc);
     }
 
     return in;
-
 }
 
-vector<vector<Tile*>> GameBoard::getGameBoard() {
+vector<vector<Tile *>> GameBoard::getGameBoard()
+{
     return this->gameBoard;
 }

@@ -51,11 +51,11 @@ void Menu::startNewGame()
     Player *p1 = new Player();
     Player *p2 = new Player();
 
-    cout << "Player 1 enter name: " << endl;
+    cout << "Player 1 enter name: ";
     string name;
     std::cin >> name;
     p1->setName(name);
-    cout << "Player 2 enter name: " << endl;
+    cout << "Player 2 enter name: ";
     name = "";
     std::cin >> name;
     p2->setName(name);
@@ -87,7 +87,7 @@ void Menu::startNewGame()
         p->setTilesInHand(tilebag);
     }
 
-    cout << "User created" << endl;
+    cout << "Users created" << endl;
 
     playGame(players, board, tilebag);
 }
@@ -167,7 +167,21 @@ void Menu::playGame(std::array<Player *, 2> players, GameBoard *gameBoard, TileB
                     // check that the play was successful, otherwise print an error message
                     if (regex_match(tile, e) && regex_match(loc, e))
                     {
-                        turnEnd = p->playTile(gameBoard, loc, tile);
+                        int playVal = p->playTile(gameBoard, loc, tile);
+                        switch (playVal)
+                        {
+                        case 0:
+                            p->setScore(p->getScore() +1);
+                            turnEnd = true;
+                            break;
+                        case 1: 
+                            cout << "QWIRKLE!!" << endl;
+                            p->setScore(p->getScore() + 6);
+                            turnEnd = true;
+                        
+                        default:
+                            break;
+                        }
                     }
                     else
                     {

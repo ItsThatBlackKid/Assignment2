@@ -26,7 +26,7 @@ public:
     LinkedList* getHand();
     void setTilesInHand(TileBag *hand);
 
-    bool playTile(GameBoard* board, string loc, string tile);
+    int playTile(GameBoard* board, string loc, string tile);
     bool replaceTile(TileBag* bag, string tile);
 
     string getName();

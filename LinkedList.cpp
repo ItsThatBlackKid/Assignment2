@@ -66,13 +66,31 @@ Node *LinkedList::get(int i)
 {
    int counter = 0;
    Node *h = head;
-   while (counter < i && h->next != nullptr)
+   while (counter != i && h != nullptr)
    {
       h = h->next;
       counter++;
+
    }
 
    return h;
+}
+
+Tile *LinkedList::get(string tile)
+{
+   bool found = false;
+   Tile *toReturn = nullptr;
+   Node *h = head;
+   // while not the tail node
+   while (h != nullptr && !found) {
+      if(h->tile->colour == tile[0] && h->tile->shape == tile[1] - '0' ) {
+         toReturn = h->tile;
+         found = true;
+      }
+      h = h->next;
+   }
+
+   return toReturn;
 }
 
 Node *LinkedList::getHead()
@@ -121,19 +139,23 @@ void LinkedList::remove(int i)
    size--;
 }
 
-ostream& operator << (ostream& os, LinkedList& list) {
-   int count = 0; 
-   while(count < list.getSize()) {
-      Tile* t= list.get(count)->tile;
+ostream &operator<<(ostream &os, LinkedList &list)
+{
+   int count = 0;
+   while (count < list.getSize())
+   {
+      Tile *t = list.get(count)->tile;
       os << t->colour << t->shape << ",";
       count++;
    }
    return os;
 }
 
-ofstream& operator << (ofstream& of,  LinkedList& list) {
-   int count = 0; 
-   while(count < list.getSize()) {
+ofstream &operator<<(ofstream &of, LinkedList &list)
+{
+   int count = 0;
+   while (count < list.getSize())
+   {
       of << list.get(count)->tile << ",";
       count++;
    }
@@ -141,20 +163,23 @@ ofstream& operator << (ofstream& of,  LinkedList& list) {
    return of;
 }
 
-ifstream& operator >>  (ifstream& in, LinkedList* list) {
+ifstream &operator>>(ifstream &in, LinkedList *list)
+{
    string line;
    std::getline(in, line);
    stringstream ss(line);
 
-   vector<string>  tiles;
-   while(ss.good()) {
+   vector<string> tiles;
+   while (ss.good())
+   {
       string sub;
-      getline(ss,sub, ',');
+      getline(ss, sub, ',');
       tiles.push_back(sub);
    }
 
-   Tile* t = new Tile();
-   for(string s: tiles) {
+   Tile *t = new Tile();
+   for (string s : tiles)
+   {
       t->colour = s[0];
       t->shape = s[1] - '0';
       list->addBack(t);
