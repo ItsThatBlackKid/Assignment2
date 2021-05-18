@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <sstream>
 #include <string>
+#include <array>
 #include <fstream>
 #include "LinkedList.h"
 #include <vector>
@@ -12,6 +13,7 @@
 using std::ofstream;
 using std::ifstream;
 using std::vector;
+using std::array;
 using std::string;
 
 #define MAXIMUM_BOARD_SIZE      26
@@ -22,6 +24,7 @@ class GameBoard{
     // ~GameBoard();
     // 0 for insert but no qwirkle, -1 for fail, 1 for insert and qwirkle
     int TileInsert(const char* position, Tile* tile );
+    bool isValid(int row, int column, Tile* tile);
 
     std::vector<std::vector<Tile*>> getGameBoard();
 
@@ -32,6 +35,9 @@ class GameBoard{
     friend ifstream& operator >> (ifstream& in, GameBoard* g);
 
     private:
+    int tiles;
+
+
     std::vector<Tile*> gameRow;
     std::vector<std::vector<Tile*>> gameBoard;
     vector<char> qwirkleRows;

@@ -40,6 +40,10 @@ Tile *TileBag::get(int i)
     return list->get(i)->tile;
 }
 
+Tile* TileBag::getFront() {
+    return list->getHead()->tile;
+}
+
 int TileBag::size()
 {
     return list->getSize();
@@ -60,6 +64,10 @@ void TileBag::add(Tile* t) {
 
 void TileBag::remove(int i) {
     list->remove(i);
+}
+
+void TileBag::removeFront() {
+    list->removeFront();
 }
 
 bool TileBag::isEmpty() {

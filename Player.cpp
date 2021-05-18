@@ -30,12 +30,16 @@ void Player::setScore(int score)
     this->score = score;
 }
 
+void Player::getTile(TileBag *bag) {
+    hand->addBack(bag->get(0));
+}
 void Player::setTilesInHand(TileBag *bag)
 {
 
     for (int i = 0; i < 6; i++)
     {
-        this->hand->addBack(bag->get(i));
+        this->hand->addBack(bag->getFront());
+        bag->removeFront();
     }
 }
 
@@ -43,7 +47,8 @@ int Player::playTile(GameBoard *board, string loc, string tile)
 {
     int played = -1;
 
-    Tile *toPlay = hand->get(tile);
+    Tile *toPlay = hand->getTile(tile);
+    hand->removeFront();
 
     std::cout << "error happens in board" << std::endl;
 

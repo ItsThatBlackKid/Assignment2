@@ -18,12 +18,14 @@ public:
 
     // returns a copy of the tile object
     Tile *get(int i);
+    Tile* getFront();
 
     LinkedList* getList();
     void setList(LinkedList* list);
 
     void add(Tile* t);
     void remove(int i);
+    void removeFront();
 
     bool isEmpty();
 

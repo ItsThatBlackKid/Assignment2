@@ -76,7 +76,7 @@ Node *LinkedList::get(int i)
    return h;
 }
 
-Tile *LinkedList::get(string tile)
+Tile *LinkedList::getTile(string tile)
 {
    bool found = false;
    Tile *toReturn = nullptr;
@@ -111,11 +111,10 @@ void LinkedList::removeFront()
       if (head->next != nullptr)
       {
          Node *h = head->next;
-         delete head;
          head = h;
       }
-      delete head;
    }
+   size--;
 }
 
 void LinkedList::remove(int i)
@@ -141,12 +140,13 @@ void LinkedList::remove(int i)
 
 ostream &operator<<(ostream &os, LinkedList &list)
 {
-   int count = 0;
-   while (count < list.getSize())
+   Node* h = list.getHead();
+   while (h != nullptr)
    {
-      Tile *t = list.get(count)->tile;
+      Tile *t = h->tile;
+
       os << t->colour << t->shape << ",";
-      count++;
+      h = h->next;
    }
    return os;
 }

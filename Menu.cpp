@@ -144,6 +144,7 @@ void Menu::playGame(std::array<Player *, 2> players, GameBoard *gameBoard, TileB
         for (Player *p : players)
         {
             pCount++;
+
             std::cout << *p->getHand() << endl;
             string playerInstruction = " ";
             bool turnEnd = false;
@@ -171,15 +172,16 @@ void Menu::playGame(std::array<Player *, 2> players, GameBoard *gameBoard, TileB
                         switch (playVal)
                         {
                         case 0:
-                            p->setScore(p->getScore() +1);
+                            p->setScore(p->getScore() + 1);
                             turnEnd = true;
                             break;
-                        case 1: 
+                        case 1:
                             cout << "QWIRKLE!!" << endl;
                             p->setScore(p->getScore() + 6);
                             turnEnd = true;
-                        
+
                         default:
+                            cout << "Sorry, invalid move" << endl;
                             break;
                         }
                     }
@@ -225,6 +227,11 @@ void Menu::playGame(std::array<Player *, 2> players, GameBoard *gameBoard, TileB
                             gameEnd = true;
                         }
                     }
+                }
+
+                if (p->getHand()->getSize() < 6)
+                {
+                    p->getTile(tileBag);
                 }
             }
         }

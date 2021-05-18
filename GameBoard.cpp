@@ -7,6 +7,46 @@ GameBoard::GameBoard()
     gameBoard.assign(MAXIMUM_BOARD_SIZE, gameRow);
 }
 
+bool GameBoard::isValid(int row, int col, Tile *t)
+{
+    bool isValid = false;
+    vector<Tile *> tileVec;
+    tileVec.assign(4, nullptr);
+    if (tiles > 0)
+    {
+        if (row - 1 >= 0)
+        {
+            tileVec[0] = gameBoard[row - 1][col];
+        }
+
+        if (row + 1 < MAXIMUM_BOARD_SIZE)
+        {
+            tileVec[2] = gameBoard[row + 1][col];
+        }
+
+        if (col - 1 < MAXIMUM_BOARD_SIZE) {
+            tileVec[1] = gameBoard[row][col-1];
+        }
+
+        if(col + 1 < MAXIMUM_BOARD_SIZE) {
+            tileVec[3] = gameBoard[row][col+1];
+        }
+
+        for(Tile* check : tileVec) {
+            if(check != nullptr) {
+                if(check->colour == t->colour || check->shape == t->shape ) {
+                    // isValid is true if and only if colour OR shape match.
+                    isValid = !(check->colour == t->colour && check->shape == t->shape);
+                } 
+            }
+        }
+    } else {
+        isValid = true;
+    }
+
+    return isValid;
+}
+
 int GameBoard::TileInsert(const char *position, Tile *tile)
 {
     int ROW = int(position[0] - 65);
@@ -24,13 +64,17 @@ int GameBoard::TileInsert(const char *position, Tile *tile)
 
     if (gameBoard[ROW][COLUMN] == nullptr)
     {
-        gameBoard[ROW][COLUMN] = tile;
-        std::cout << "error happens in qwirkle" << std::endl;
-        playVal = 0;
-        qwirkle = isQwirkle(UP, COLUMN, 0, tile);
-        qwirkle = qwirkle || isQwirkle(ROW, RIGHT, 1, tile);
-        qwirkle = qwirkle || isQwirkle(DOWN, COLUMN, 2, tile);
-        qwirkle = qwirkle || isQwirkle(COLUMN, LEFT, 3, tile);
+        if (isValid(ROW, COLUMN, tile))
+        {
+            gameBoard[ROW][COLUMN] = tile;
+            std::cout << "error happens in qwirkle" << std::endl;
+            playVal = 0;
+            qwirkle = isQwirkle(UP, COLUMN, 0, tile);
+            qwirkle = qwirkle || isQwirkle(ROW, RIGHT, 1, tile);
+            qwirkle = qwirkle || isQwirkle(DOWN, COLUMN, 2, tile);
+            qwirkle = qwirkle || isQwirkle(COLUMN, LEFT, 3, tile);
+            this->tiles++;
+        }
     }
 
     if (qwirkle)

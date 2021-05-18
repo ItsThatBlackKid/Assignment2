@@ -24,6 +24,7 @@ public:
     void setScore(int Score);
 
     LinkedList* getHand();
+    void getTile(TileBag *bag);
     void setTilesInHand(TileBag *hand);
 
     int playTile(GameBoard* board, string loc, string tile);
