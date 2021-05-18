@@ -137,7 +137,7 @@ void GameBoard::placeTile(Tile *t, string location)
     int row = location[0] - 65;
     int col = location[1] - '0';
 
-    gameBoard.at(row).at(col) = t;
+    gameBoard[row][col] = t;
 }
 
 bool GameBoard::isQwirkle(int row, int column, int direction, Tile *t)
@@ -256,7 +256,7 @@ bool GameBoard::isQwirkle(int row, int column, int direction, Tile *t)
 
 bool GameBoard::doesMatch(int row, int column, Tile *t)
 {
-    return gameBoard[row][column]->shape == t->shape && gameBoard[row][column]->colour == t->colour;
+    return gameBoard[row][column]->shape == t->shape || gameBoard[row][column]->colour == t->colour;
 }
 
 ofstream &operator<<(ofstream &of, GameBoard &g)
@@ -291,13 +291,13 @@ ofstream &operator<<(ofstream &of, GameBoard &g)
 ifstream &operator>>(ifstream &in, GameBoard *g)
 {
     // no need to read the shape here
-    char c;
-    in >> c;
-
+    string shape;
+    std::getline(in, shape);
     string boardLine = "";
     std::getline(in, boardLine);
 
     std::stringstream ss(boardLine);
+    std::cout << "board line: " << boardLine << std::endl;
 
     vector<string> tiles;
 
@@ -316,7 +316,7 @@ ifstream &operator>>(ifstream &in, GameBoard *g)
         Tile *tile = new Tile();
         tile->colour = t[0];
         tile->shape = t[1] - '0';
-        g->placeTile(tile, loc);
+        g->TileInsert(loc.c_str(), tile);
     }
 
     return in;

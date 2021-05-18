@@ -170,20 +170,26 @@ ifstream &operator>>(ifstream &in, LinkedList *list)
    stringstream ss(line);
 
    vector<string> tiles;
+
    while (ss.good())
    {
       string sub;
       getline(ss, sub, ',');
+      if(sub[0] == ' ') {
+         sub = sub[1];
+         sub += sub[2];
+      }
       tiles.push_back(sub);
    }
 
-   Tile *t = new Tile();
+   Tile *t = nullptr;
    for (string s : tiles)
    {
-      t->colour = s[0];
-      t->shape = s[1] - '0';
+      t = new Tile(s[0], s[1] - '0');
       list->addBack(t);
    }
+
+   std::cout << "hand: " << *list << std::endl;
 
    return in;
 }

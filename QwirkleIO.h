@@ -14,4 +14,4 @@
 #endif
 
 void saveGameState(std::array<Player*,2> players,GameBoard* gameBoard, TileBag* tileBag, std::string filename, bool isPlayerOne);
-void loadGameState(std::array<Player*,2> players, GameBoard* gameBoard, TileBag* tileBag, std::string filename);
+string loadGameState(std::array<Player*,2> players, GameBoard* gameBoard, TileBag* tileBag, std::string filename);

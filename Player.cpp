@@ -109,8 +109,9 @@ ofstream &operator<<(ofstream &of, const Player &p)
 
 ifstream &operator>>(ifstream &in, Player *player)
 {
-    in >> player->name;
+    getline(in, player->name);
     in >> player->score;
+    in.ignore();
     in >> player->hand;
     return in;
 }

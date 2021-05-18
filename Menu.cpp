@@ -18,6 +18,7 @@ void Menu::runGame()
         //Prints out Menu
         displayMenu();
         cin >> playerInput;
+        cin.ignore();
         int input = stoi(playerInput);
         switch (input)
         {
@@ -87,7 +88,6 @@ void Menu::startNewGame()
         p->setTilesInHand(tilebag);
     }
 
-    cout << "Users created" << endl;
 
     playGame(players, board, tilebag);
 }
@@ -107,6 +107,27 @@ void Menu::displayMenu()
 //Load Game
 void Menu::loadGame()
 {
+    Player* p = new Player();
+    Player* p2 = new Player();
+    std::array<Player*, 2> players = {p,p2};
+    GameBoard* board = new GameBoard();
+    TileBag* bag = new TileBag();
+
+    string filename;
+    string currName;
+
+    cout << "Enter file name: ";
+    getline(cin, filename);
+
+    currName = loadGameState(players, board, bag, filename);
+
+    if(currName == players[1]->getName()) {
+        Player* tmp = players[0];
+        players[0] = players[1];
+        players[1] = tmp;
+    }
+
+    playGame(players, board, bag);
 }
 
 //Show Credits
@@ -144,12 +165,17 @@ void Menu::playGame(std::array<Player *, 2> players, GameBoard *gameBoard, TileB
         for (Player *p : players)
         {
             pCount++;
-
-            std::cout << *p->getHand() << endl;
-            string playerInstruction = " ";
-            bool turnEnd = false;
+            cout << p->getName() << ", it is your turn" << endl;
+            for(Player* pl: players) {
+                cout << "Score for " << pl->getName()  << ": " << pl->getScore() << endl;
+            }
 
             cout << *gameBoard;
+            cout << "Your hand is" << endl;
+            std::cout << *p->getHand() << endl;
+
+            string playerInstruction = " ";
+            bool turnEnd = false;
 
             while (!turnEnd)
             {
