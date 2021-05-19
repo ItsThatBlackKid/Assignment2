@@ -20,3 +20,21 @@ Tile::Tile(Tile& other) {
 Shape Tile::getShape() {
     return this->shape;
 }
+
+ostream& operator << (ostream& os, const Tile& t) {
+    os << t.colour << t.shape;
+    return os;
+}
+
+ofstream& operator<<(ofstream& of, const Tile&t) {
+    of << t.colour << t.shape;
+    return of;
+}
+
+ifstream& operator>>(ifstream& in, Tile& t) {
+    in >> t.colour;
+    in >> t.shape;
+
+    return in;
+}
+
