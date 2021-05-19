@@ -67,7 +67,6 @@ int GameBoard::TileInsert(const char *position, Tile *tile, bool fromFile)
     {
         if (fromFile || isValid(ROW, COLUMN, tile) )
         {
-            std:: cout << "tile shape: " << tile->shape << std::endl;
             gameBoard[ROW][COLUMN] = tile;
             playVal = 0;
             qwirkle = isQwirkle(UP, COLUMN, 0, tile);
@@ -312,7 +311,6 @@ ifstream &operator>>(ifstream &in, GameBoard *g)
 
     for (string s : tiles)
     {
-        std::cout << "s: " << s << std::endl;
         string t = s.substr(0, s.find('@'));
         string loc = s.substr(s.find('@') + 1);
 

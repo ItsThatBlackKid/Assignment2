@@ -189,7 +189,6 @@ ifstream &operator>>(ifstream &in, LinkedList *list)
       list->addBack(t);
    }
 
-   std::cout << "hand: " << *list << std::endl;
 
    return in;
 }
