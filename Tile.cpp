@@ -17,6 +17,10 @@ Tile::Tile(Tile& other) {
     this->shape = other.shape;
 }
 
+bool Tile::canPlace(Tile* onBoard) { 
+    return shape == onBoard->shape || colour == onBoard->colour;
+}
+
 Shape Tile::getShape() {
     return this->shape;
 }

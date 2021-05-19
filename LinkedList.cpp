@@ -156,7 +156,7 @@ ofstream &operator<<(ofstream &of, LinkedList &list)
    int count = 0;
    while (count < list.getSize())
    {
-      of << list.get(count)->tile << ",";
+      of << *list.get(count)->tile << ",";
       count++;
    }
    of << std::endl;

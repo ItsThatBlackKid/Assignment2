@@ -1,2 +1,7 @@
 *.o
 .vscode/*
+*.zip
+# Ignore all
+*
+# Unignore all with extensions
+!*.*

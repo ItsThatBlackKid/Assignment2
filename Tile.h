@@ -20,6 +20,7 @@ public:
    Tile(Colour, Shape);
    Tile();
    Tile(Tile& other);
+   bool canPlace(Tile* onBoard);
 
    Shape getShape();
 

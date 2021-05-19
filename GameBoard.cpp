@@ -10,38 +10,40 @@ GameBoard::GameBoard()
 bool GameBoard::isValid(int row, int col, Tile *t)
 {
     bool isValid = false;
-    std::array<Tile*, 4> arr = {nullptr, nullptr, nullptr, nullptr};
-    
+
     if (tiles > 0)
     {
-        if (row - 1 >= 0)
+        Tile *tmp;
+        for(int i = 0; i < 6; i++) {
+            if (row - i >= 0)
         {
-            arr[0] = gameBoard[row - 1][col];
+            tmp = gameBoard[row - 1][col];
+            isValid = !tmp || t->canPlace(tmp);
         }
 
-        if (row + 1 < MAXIMUM_BOARD_SIZE)
+        if (row + i < MAXIMUM_BOARD_SIZE)
         {
-            arr[1] = gameBoard[row + 1][col];
+            tmp = gameBoard[row + 1][col];
+            isValid = !tmp || t->canPlace(tmp);
         }
 
-        if (col - 1 >= 0) {
-            arr[2] = gameBoard[row][col-1];
+        if (col - i >= 0)
+        {
+            tmp = gameBoard[row][col - 1];
+            isValid = !tmp || t->canPlace(tmp);
         }
 
-        if(col + 1 < MAXIMUM_BOARD_SIZE) {
-            arr[3] = gameBoard[row][col+1];
+        if (col + i < MAXIMUM_BOARD_SIZE)
+        {
+            tmp = gameBoard[row][col + 1];
+            isValid = !tmp || t->canPlace(tmp);
+        }
         }
 
-        for(auto check : arr) {
-            if(check != nullptr) {
-                std:: cout << "check shape; " << check->colour << std::endl;
-                if(check->colour == t->colour || check->shape == t->shape ) {
-                    // isValid is true if and only if colour OR shape match.
-                    isValid = !(check->colour == t->colour && check->shape == t->shape);
-                } 
-            }
-        }
-    } else {
+        
+    }
+    else
+    {
         isValid = true;
     }
 
@@ -65,7 +67,7 @@ int GameBoard::TileInsert(const char *position, Tile *tile, bool fromFile)
 
     if (gameBoard[ROW][COLUMN] == nullptr)
     {
-        if (fromFile || isValid(ROW, COLUMN, tile) )
+        if (fromFile || isValid(ROW, COLUMN, tile))
         {
             gameBoard[ROW][COLUMN] = tile;
             playVal = 0;
@@ -125,7 +127,7 @@ std::ostream &operator<<(std::ostream &os, const GameBoard &g)
                 colour = g.gameBoard[i][j]->colour;
                 shape = g.gameBoard[i][j]->shape;
                 os << "|" << colour;
-                os << (int) shape ;
+                os << (int)shape;
             }
         }
         os << "|" << std::endl;
@@ -297,11 +299,14 @@ ifstream &operator>>(ifstream &in, GameBoard *g)
     {
         string substr;
         getline(ss, substr, ',');
-        if(substr[0] == ' ') {
+        if (substr[0] == ' ')
+        {
             string tmp = substr;
             substr = "";
-            for(char c: tmp) {
-                if(c != ' ') {
+            for (char c : tmp)
+            {
+                if (c != ' ')
+                {
                     substr += c;
                 }
             }
