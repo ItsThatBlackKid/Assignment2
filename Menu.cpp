@@ -88,7 +88,6 @@ void Menu::startNewGame()
         p->setTilesInHand(tilebag);
     }
 
-
     playGame(players, board, tilebag);
 }
 
@@ -107,11 +106,11 @@ void Menu::displayMenu()
 //Load Game
 void Menu::loadGame()
 {
-    Player* p = new Player();
-    Player* p2 = new Player();
-    std::array<Player*, 2> players = {p,p2};
-    GameBoard* board = new GameBoard();
-    TileBag* bag = new TileBag();
+    Player *p = new Player();
+    Player *p2 = new Player();
+    std::array<Player *, 2> players = {p, p2};
+    GameBoard *board = new GameBoard();
+    TileBag *bag = new TileBag();
 
     string filename;
     string currName;
@@ -121,8 +120,9 @@ void Menu::loadGame()
 
     currName = loadGameState(players, board, bag, filename);
 
-    if(currName == players[1]->getName()) {
-        Player* tmp = players[0];
+    if (currName == players[1]->getName())
+    {
+        Player *tmp = players[0];
         players[0] = players[1];
         players[1] = tmp;
     }
@@ -164,100 +164,104 @@ void Menu::playGame(std::array<Player *, 2> players, GameBoard *gameBoard, TileB
         int pCount = 0;
         for (Player *p : players)
         {
-            pCount++;
-            cout << p->getName() << ", it is your turn" << endl;
-            for(Player* pl: players) {
-                cout << "Score for " << pl->getName()  << ": " << pl->getScore() << endl;
-            }
-
-            cout << *gameBoard;
-            cout << "Your hand is" << endl;
-            std::cout << *p->getHand() << endl;
-
-            string playerInstruction = " ";
-            bool turnEnd = false;
-
-            while (!turnEnd)
+            if (!gameEnd)
             {
-                cout << "> ";
-                getline(cin, playerInstruction);
-                cout << "player input: " << playerInstruction << endl;
-                regex e("[A-Z][0-9]");
-
-                if (playerInstruction.compare(0, 6, "place ") == 0 && playerInstruction.compare(9, 3, "at ") == 0)
+                pCount++;
+                cout << p->getName() << ", it is your turn" << endl;
+                for (Player *pl : players)
                 {
-                    string tile = playerInstruction.substr(6, 2);
-                    std::transform(tile.begin(), tile.end(), tile.begin(), ::toupper);
-                    string loc = playerInstruction.substr(12, 2);
-                    std::transform(loc.begin(), loc.end(), loc.begin(), ::toupper);
+                    cout << "Score for " << pl->getName() << ": " << pl->getScore() << endl;
+                }
 
-                    // check that the play was successful, otherwise print an error message
-                    if (regex_match(tile, e) && regex_match(loc, e))
+                cout << *gameBoard;
+                cout << "Your hand is" << endl;
+                std::cout << *p->getHand() << endl;
+
+                string playerInstruction = " ";
+                bool turnEnd = false;
+
+                while (!turnEnd)
+                {
+                    cout << "> ";
+                    getline(cin, playerInstruction);
+                    cout << "player input: " << playerInstruction << endl;
+                    regex e("[A-Z][0-9]");
+
+                    if (playerInstruction.compare(0, 6, "place ") == 0 && playerInstruction.compare(9, 3, "at ") == 0)
                     {
-                        int playVal = p->playTile(gameBoard, loc, tile);
-                        switch (playVal)
-                        {
-                        case 0:
-                            p->setScore(p->getScore() + 1);
-                            turnEnd = true;
-                            break;
-                        case 1:
-                            cout << "QWIRKLE!!" << endl;
-                            p->setScore(p->getScore() + 6);
-                            turnEnd = true;
+                        string tile = playerInstruction.substr(6, 2);
+                        std::transform(tile.begin(), tile.end(), tile.begin(), ::toupper);
+                        string loc = playerInstruction.substr(12, 2);
+                        std::transform(loc.begin(), loc.end(), loc.begin(), ::toupper);
 
-                        default:
-                            cout << "Sorry, invalid move" << endl;
-                            break;
+                        // check that the play was successful, otherwise print an error message
+                        if (regex_match(tile, e) && regex_match(loc, e))
+                        {
+                            int playVal = p->playTile(gameBoard, loc, tile);
+                            switch (playVal)
+                            {
+                            case 0:
+                                p->setScore(p->getScore() + 1);
+                                turnEnd = true;
+                                break;
+                            case 1:
+                                cout << "QWIRKLE!!" << endl;
+                                p->setScore(p->getScore() + 6);
+                                turnEnd = true;
+
+                            default:
+                                cout << "Sorry, invalid move" << endl;
+                                break;
+                            }
                         }
+                        else
+                        {
+                            cout << "Sorry, unable to make that move" << endl;
+                        }
+                    }
+                    else if (playerInstruction.compare(0, 8, "replace ") == 0)
+                    {
+                        string tile = playerInstruction.substr(8, 2);
+                        if (regex_match(tile, e))
+                        {
+                            p->replaceTile(tileBag, tile);
+                        }
+                        else
+                        {
+                            cout << "Sorry,  unable to make that move";
+                        }
+                    }
+                    else if (playerInstruction.compare(0, 5, "save ") == 0)
+                    {
+                        string filename;
+                        cout << "Enter filename: " << endl;
+                        std::getline(cin, filename);
+                        saveGameState(players, gameBoard, tileBag, filename, (bool)(pCount % 2));
+                    }
+                    else if (playerInstruction.compare(0, 5, "quit ") == 0)
+                    {
+                        gameEnd = true;
                     }
                     else
                     {
-                        cout << "Sorry, unable to make that move" << endl;
+                        std::cout << "Invalid command" << std::endl;
                     }
-                }
-                else if (playerInstruction.compare(0, 8, "replace ") == 0)
-                {
-                    string tile = playerInstruction.substr(8, 2);
-                    if (regex_match(tile, e))
-                    {
-                        p->replaceTile(tileBag, tile);
-                    }
-                    else
-                    {
-                        cout << "Sorry,  unable to make that move";
-                    }
-                }
-                else if (playerInstruction.compare(0, 5, "save ") == 0)
-                {
-                    string filename;
-                    cout << "Enter filename: " << endl;
-                    std::getline(cin, filename);
-                    saveGameState(players, gameBoard, tileBag, filename, (bool)(pCount % 2));
-                }
-                else if (playerInstruction.compare(0, 5, "quit ") == 0)
-                {
-                    gameEnd = true;
-                }
-                else
-                {
-                    std::cout << "Invalid command" << std::endl;
-                }
 
-                // set the exit condition
-                if (tileBag->isEmpty() && !gameEnd)
-                {
+                    // set the exit condition
+                    if (tileBag->isEmpty() && !gameEnd)
                     {
-                        if (p->getHand()->isEmpty())
                         {
-                            gameEnd = true;
+                            if (p->getHand()->isEmpty())
+                            {
+                                gameEnd = true;
+                            }
                         }
                     }
-                }
 
-                if (p->getHand()->getSize() < 6)
-                {
-                    p->getTile(tileBag);
+                    if (p->getHand()->getSize() < 6)
+                    {
+                        p->getTile(tileBag);
+                    }
                 }
             }
         }

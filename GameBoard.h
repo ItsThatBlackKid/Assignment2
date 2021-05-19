@@ -23,7 +23,7 @@ class GameBoard{
     GameBoard();
     // ~GameBoard();
     // 0 for insert but no qwirkle, -1 for fail, 1 for insert and qwirkle
-    int TileInsert(const char* position, Tile* tile );
+    int TileInsert(const char* position, Tile* tile, bool fromFile);
     bool isValid(int row, int column, Tile* tile);
 
     std::vector<std::vector<Tile*>> getGameBoard();

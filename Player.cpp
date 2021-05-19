@@ -50,15 +50,13 @@ int Player::playTile(GameBoard *board, string loc, string tile)
     Tile *toPlay = hand->getTile(tile);
     hand->removeFront();
 
-    std::cout << "error happens in board" << std::endl;
-
     if (toPlay == nullptr)
     {
         played = -1;
     }
     else
     {
-        played = board->TileInsert(loc.c_str(), toPlay);
+        played = board->TileInsert(loc.c_str(), toPlay, false);
     }
 
     return played;

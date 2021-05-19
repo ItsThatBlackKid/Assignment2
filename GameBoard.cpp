@@ -10,30 +10,31 @@ GameBoard::GameBoard()
 bool GameBoard::isValid(int row, int col, Tile *t)
 {
     bool isValid = false;
-    vector<Tile *> tileVec;
-    tileVec.assign(4, nullptr);
+    std::array<Tile*, 4> arr = {nullptr, nullptr, nullptr, nullptr};
+    
     if (tiles > 0)
     {
         if (row - 1 >= 0)
         {
-            tileVec[0] = gameBoard[row - 1][col];
+            arr[0] = gameBoard[row - 1][col];
         }
 
         if (row + 1 < MAXIMUM_BOARD_SIZE)
         {
-            tileVec[2] = gameBoard[row + 1][col];
+            arr[1] = gameBoard[row + 1][col];
         }
 
-        if (col - 1 < MAXIMUM_BOARD_SIZE) {
-            tileVec[1] = gameBoard[row][col-1];
+        if (col - 1 >= 0) {
+            arr[2] = gameBoard[row][col-1];
         }
 
         if(col + 1 < MAXIMUM_BOARD_SIZE) {
-            tileVec[3] = gameBoard[row][col+1];
+            arr[3] = gameBoard[row][col+1];
         }
 
-        for(Tile* check : tileVec) {
+        for(auto check : arr) {
             if(check != nullptr) {
+                std:: cout << "check shape; " << check->colour << std::endl;
                 if(check->colour == t->colour || check->shape == t->shape ) {
                     // isValid is true if and only if colour OR shape match.
                     isValid = !(check->colour == t->colour && check->shape == t->shape);
@@ -47,7 +48,7 @@ bool GameBoard::isValid(int row, int col, Tile *t)
     return isValid;
 }
 
-int GameBoard::TileInsert(const char *position, Tile *tile)
+int GameBoard::TileInsert(const char *position, Tile *tile, bool fromFile)
 {
     int ROW = int(position[0] - 65);
     int COLUMN = int(position[1] - '0');
@@ -64,10 +65,10 @@ int GameBoard::TileInsert(const char *position, Tile *tile)
 
     if (gameBoard[ROW][COLUMN] == nullptr)
     {
-        if (isValid(ROW, COLUMN, tile))
+        if (fromFile || isValid(ROW, COLUMN, tile) )
         {
+            std:: cout << "tile shape: " << tile->shape << std::endl;
             gameBoard[ROW][COLUMN] = tile;
-            std::cout << "error happens in qwirkle" << std::endl;
             playVal = 0;
             qwirkle = isQwirkle(UP, COLUMN, 0, tile);
             qwirkle = qwirkle || isQwirkle(ROW, RIGHT, 1, tile);
@@ -124,20 +125,13 @@ std::ostream &operator<<(std::ostream &os, const GameBoard &g)
             {
                 colour = g.gameBoard[i][j]->colour;
                 shape = g.gameBoard[i][j]->shape;
-                os << "|" << colour << shape;
+                os << "|" << colour;
+                os << shape;
             }
         }
         os << "|" << std::endl;
     }
     return os;
-}
-
-void GameBoard::placeTile(Tile *t, string location)
-{
-    int row = location[0] - 65;
-    int col = location[1] - '0';
-
-    gameBoard[row][col] = t;
 }
 
 bool GameBoard::isQwirkle(int row, int column, int direction, Tile *t)
@@ -297,7 +291,6 @@ ifstream &operator>>(ifstream &in, GameBoard *g)
     std::getline(in, boardLine);
 
     std::stringstream ss(boardLine);
-    std::cout << "board line: " << boardLine << std::endl;
 
     vector<string> tiles;
 
@@ -305,18 +298,28 @@ ifstream &operator>>(ifstream &in, GameBoard *g)
     {
         string substr;
         getline(ss, substr, ',');
+        if(substr[0] == ' ') {
+            string tmp = substr;
+            substr = "";
+            for(char c: tmp) {
+                if(c != ' ') {
+                    substr += c;
+                }
+            }
+        }
         tiles.push_back(substr);
     }
 
     for (string s : tiles)
     {
+        std::cout << "s: " << s << std::endl;
         string t = s.substr(0, s.find('@'));
         string loc = s.substr(s.find('@') + 1);
 
         Tile *tile = new Tile();
         tile->colour = t[0];
         tile->shape = t[1] - '0';
-        g->TileInsert(loc.c_str(), tile);
+        g->TileInsert(loc.c_str(), tile, true);
     }
 
     return in;
