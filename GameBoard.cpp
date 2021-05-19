@@ -126,7 +126,7 @@ std::ostream &operator<<(std::ostream &os, const GameBoard &g)
                 colour = g.gameBoard[i][j]->colour;
                 shape = g.gameBoard[i][j]->shape;
                 os << "|" << colour;
-                os << shape;
+                os << (int) shape ;
             }
         }
         os << "|" << std::endl;

@@ -19,7 +19,6 @@ public:
    Shape  shape;
    Tile(Colour, Shape);
    Tile();
-   Tile(Colour colour, Shape shape);
    Tile(Tile& other);
 
    Shape getShape();
