@@ -180,11 +180,10 @@ void Menu::playGame(std::array<Player *, 2> players, GameBoard *gameBoard, TileB
                 string playerInstruction = " ";
                 bool turnEnd = false;
 
-                while (!turnEnd)
+                while (!turnEnd && !gameEnd)
                 {
                     cout << "> ";
                     getline(cin, playerInstruction);
-                    cout << "player input: " << playerInstruction << endl;
                     regex e("[A-Z][0-9]");
 
                     if (playerInstruction.compare(0, 6, "place ") == 0 && playerInstruction.compare(9, 3, "at ") == 0)
@@ -266,4 +265,11 @@ void Menu::playGame(std::array<Player *, 2> players, GameBoard *gameBoard, TileB
             }
         }
     }
+
+    for (Player* p: players) {
+        delete p;
+    }
+
+    delete gameBoard;
+    delete tileBag;
 }

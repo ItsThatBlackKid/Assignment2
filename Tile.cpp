@@ -18,7 +18,16 @@ Tile::Tile(Tile& other) {
 }
 
 bool Tile::canPlace(Tile* onBoard) { 
-    return shape == onBoard->shape || colour == onBoard->colour;
+    bool canPlace = false;
+    bool sameShape = shape == onBoard->shape;
+    bool sameColour = colour == onBoard->colour;
+    if(sameShape) {
+        canPlace = !sameColour;
+    } else if(sameColour) {
+        canPlace = !sameShape;
+    }
+
+    return canPlace;
 }
 
 Shape Tile::getShape() {

@@ -9,42 +9,83 @@ GameBoard::GameBoard()
 
 bool GameBoard::isValid(int row, int col, Tile *t)
 {
-    bool isValid = false;
+    bool isValid = true;
 
     if (tiles > 0)
     {
-        Tile *tmp;
-        for(int i = 0; i < 6; i++) {
-            if (row - i >= 0)
+        for (int i = 0; i < 4; i++)
         {
-            tmp = gameBoard[row - 1][col];
-            isValid = !tmp || t->canPlace(tmp);
-        }
+            // we want to check the next direction if the move is valid.
+            // here we assume the move is valid, and the gameboard must prove it is not
+            // NORTH.
+            Tile *tmp;
+            if (i == 0)
+            {
+                // check next six tiles
+                for (int j = 0; j < 5; j++)
+                {
+                    if (row - j >= 0)
+                    {
+                        if (isValid)
+                        {
+                            tmp = gameBoard[row - j][col];
+                            isValid = !tmp || t->canPlace(tmp);
+                        }
+                    }
+                }
+            }
 
-        if (row + i < MAXIMUM_BOARD_SIZE)
-        {
-            tmp = gameBoard[row + 1][col];
-            isValid = !tmp || t->canPlace(tmp);
-        }
+            // south
+            if (i == 2)
+            {
+                // check next six tiles
+                for (int j = 0; j < 5; j++)
+                {
+                    if (row + j >= 0)
+                    {
+                        if (isValid)
+                        {
+                            tmp = gameBoard[row + j][col];
+                            isValid = !tmp || t->canPlace(tmp);
+                        }
+                    }
+                }
+            }
 
-        if (col - i >= 0)
-        {
-            tmp = gameBoard[row][col - 1];
-            isValid = !tmp || t->canPlace(tmp);
-        }
+            if (i == 1)
+            {
+                // check next six tiles
+                for (int j = 0; j < 5; j++)
+                {
 
-        if (col + i < MAXIMUM_BOARD_SIZE)
-        {
-            tmp = gameBoard[row][col + 1];
-            isValid = !tmp || t->canPlace(tmp);
-        }
-        }
+                    if (col - j >= 0)
+                    {
+                        if (isValid)
+                        {
+                            tmp = gameBoard[row][col - j];
+                            isValid = !tmp || t->canPlace(tmp);
+                        }
+                    }
+                }
+            }
 
-        
-    }
-    else
-    {
-        isValid = true;
+            // west
+            if (i == 3)
+            {
+                // check next six tiles
+                for (int j = 0; j < 5; j++)
+                {
+                    if (col + j < MAXIMUM_BOARD_SIZE)
+                    {
+                        if (isValid)
+                        {
+                            tmp = gameBoard[row][col + j];
+                            isValid = !tmp || t->canPlace(tmp);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     return isValid;
