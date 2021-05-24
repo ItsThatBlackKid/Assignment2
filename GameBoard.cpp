@@ -22,14 +22,22 @@ bool GameBoard::isValid(int row, int col, Tile *t)
             if (i == 0)
             {
                 // check next six tiles
-                for (int j = 0; j < 5; j++)
+                for (int j = 1; j < 6; j++)
                 {
                     if (row - j >= 0)
                     {
                         if (isValid)
                         {
                             tmp = gameBoard[row - j][col];
-                            isValid = !tmp || t->canPlace(tmp);
+                            if(tmp)
+                                isValid = t->canPlace(tmp);
+                            else {
+                                j = 6;
+                            }
+                        }
+                         if(!isValid){
+                            i = 4; 
+                            j = 6;
                         }
                     }
                 }
@@ -39,14 +47,23 @@ bool GameBoard::isValid(int row, int col, Tile *t)
             if (i == 2)
             {
                 // check next six tiles
-                for (int j = 0; j < 5; j++)
+                for (int j = 1; j < 6; j++)
                 {
                     if (row + j >= 0)
                     {
                         if (isValid)
                         {
                             tmp = gameBoard[row + j][col];
-                            isValid = !tmp || t->canPlace(tmp);
+                            if(tmp)
+                                isValid =  t->canPlace(tmp);
+                            else {
+                                j = 6;
+                            }
+                        }
+
+                        if(!isValid) {
+                            i = 4; 
+                            j = 6;
                         }
                     }
                 }
@@ -55,7 +72,7 @@ bool GameBoard::isValid(int row, int col, Tile *t)
             if (i == 1)
             {
                 // check next six tiles
-                for (int j = 0; j < 5; j++)
+                for (int j = 1; j < 6; j++)
                 {
 
                     if (col - j >= 0)
@@ -63,24 +80,40 @@ bool GameBoard::isValid(int row, int col, Tile *t)
                         if (isValid)
                         {
                             tmp = gameBoard[row][col - j];
-                            isValid = !tmp || t->canPlace(tmp);
+                            if (tmp)
+                                isValid = t->canPlace(tmp);
+                            else {
+                                 j =6;
+                            }
+                        }
+                        if(!isValid){
+                            i = 4; 
+                            j = 6;
                         }
                     }
                 }
             }
 
-            // west
+            // east
             if (i == 3)
             {
                 // check next six tiles
-                for (int j = 0; j < 5; j++)
+                for (int j = 1; j < 6; j++)
                 {
                     if (col + j < MAXIMUM_BOARD_SIZE)
                     {
                         if (isValid)
                         {
                             tmp = gameBoard[row][col + j];
-                            isValid = !tmp || t->canPlace(tmp);
+                            if(tmp)
+                                isValid =  t->canPlace(tmp);
+                            else {
+                                 j =5;
+                            }
+                        }
+                        if(!isValid){
+                            i = 4; 
+                            j = 6;
                         }
                     }
                 }

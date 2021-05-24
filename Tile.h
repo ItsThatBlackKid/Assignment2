@@ -21,6 +21,7 @@ public:
    Tile();
    Tile(Tile& other);
    bool canPlace(Tile* onBoard);
+   bool canPlace(Tile* onBoard, bool isLine);
 
    Shape getShape();
 

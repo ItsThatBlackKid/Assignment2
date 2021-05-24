@@ -184,89 +184,105 @@ void Menu::playGame(std::array<Player *, 2> players, GameBoard *gameBoard, TileB
                 {
                     cout << "> ";
                     getline(cin, playerInstruction);
+
+                    vector<string> tokens;
+                    string interim;
+                    stringstream check(playerInstruction);
+
+                    while (getline(check, interim, ' '))
+                    {
+                        tokens.push_back(interim);
+                    }
+
                     regex e("[A-Z][0-9]");
 
-                    if (playerInstruction.compare(0, 6, "place ") == 0 && playerInstruction.compare(9, 3, "at ") == 0)
+                    string command = tokens[0];
+                    if (command == "place")
                     {
-                        string tile = playerInstruction.substr(6, 2);
-                        std::transform(tile.begin(), tile.end(), tile.begin(), ::toupper);
-                        string loc = playerInstruction.substr(12, 2);
-                        std::transform(loc.begin(), loc.end(), loc.begin(), ::toupper);
-
-                        // check that the play was successful, otherwise print an error message
-                        if (regex_match(tile, e) && regex_match(loc, e))
+                        //  should be "at"
+                        string atToken = tokens[2];
+                        if (atToken == "at")
                         {
-                            int playVal = p->playTile(gameBoard, loc, tile);
-                            switch (playVal)
-                            {
-                            case 0:
-                                p->setScore(p->getScore() + 1);
-                                turnEnd = true;
-                                break;
-                            case 1:
-                                cout << "QWIRKLE!!" << endl;
-                                p->setScore(p->getScore() + 6);
-                                turnEnd = true;
+                            string tile = tokens[1];
+                            string loc = tokens[3];
 
-                            default:
-                                cout << "Sorry, invalid move" << endl;
-                                break;
+                            std::transform(tile.begin(), tile.end(), tile.begin(), ::toupper);
+                            std::transform(loc.begin(), loc.end(), loc.begin(), ::toupper);
+
+                            if (regex_match(tile, e) && regex_match(loc, e))
+                            {
+                                int playVal = p->playTile(gameBoard, loc, tile);
+                                switch (playVal)
+                                {
+                                case 0:
+                                    p->setScore(p->getScore() + 1);
+                                    turnEnd = true;
+                                    break;
+                                case 1:
+                                    cout << "QWIRKLE!!" << endl;
+                                    p->setScore(p->getScore() + 6);
+                                    turnEnd = true;
+                                    break;
+                                default:
+                                    break;
+                                }
                             }
                         }
-                        else
-                        {
-                            cout << "Sorry, unable to make that move" << endl;
-                        }
                     }
-                    else if (playerInstruction.compare(0, 8, "replace ") == 0)
+                    else if (command == "replace")
                     {
-                        string tile = playerInstruction.substr(8, 2);
+                        string tile = tokens[1];
                         if (regex_match(tile, e))
                         {
                             p->replaceTile(tileBag, tile);
-                        }
-                        else
-                        {
-                            cout << "Sorry,  unable to make that move";
+                            turnEnd = true;
                         }
                     }
-                    else if (playerInstruction.compare(0, 5, "save ") == 0)
+                    else if (command == "save")
                     {
+                        cout << "Enter filename: ";
                         string filename;
-                        cout << "Enter filename: " << endl;
-                        std::getline(cin, filename);
+                        getline(cin, filename);
                         saveGameState(players, gameBoard, tileBag, filename, (bool)(pCount % 2));
                     }
-                    else if (playerInstruction.compare(0, 5, "quit ") == 0)
+                    else if (command == "quit")
                     {
                         gameEnd = true;
+                        turnEnd = true;
                     }
-                    else
+
+                    if (!turnEnd)
                     {
-                        std::cout << "Invalid command" << std::endl;
+                        cout << "Sorry, invalid move" << endl;
                     }
 
                     // set the exit condition
                     if (tileBag->isEmpty() && !gameEnd)
                     {
+                        for (auto p : players)
                         {
                             if (p->getHand()->isEmpty())
                             {
                                 gameEnd = true;
+                                turnEnd = true;
                             }
                         }
                     }
 
-                    if (p->getHand()->getSize() < 6)
+                    if (!gameEnd)
                     {
-                        p->getTile(tileBag);
+                        if (p->getHand()->getSize() < 6)
+                        {
+                            p->getTile(tileBag);
+                        }
                     }
                 }
             }
         }
     }
 
-    for (Player* p: players) {
+    for (Player *p : players)
+    {
         delete p;
     }
 

@@ -26,6 +26,7 @@ class GameBoard{
     int TileInsert(const char* position, Tile* tile, bool fromFile);
     bool isValid(int row, int column, Tile* tile);
 
+
     std::vector<std::vector<Tile*>> getGameBoard();
 
     void placeTile(Tile* tile, string location);
@@ -36,6 +37,7 @@ class GameBoard{
 
     private:
     int tiles;
+
 
 
     std::vector<Tile*> gameRow;

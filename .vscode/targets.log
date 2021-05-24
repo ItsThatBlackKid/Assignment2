@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Wed May 19 16:04:08 2021
+# Make data base, printed on Mon May 24 17:02:47 2021
 
 # Variables
 
@@ -55,7 +55,7 @@ PATH = /root/.vscode-server/bin/054a9295330880ed74ceaedda236253b4f39a335/bin:/ro
 # environment
 VSCODE_LOG_STACK = false
 # environment
-VSCODE_IPC_HOOK_CLI = /tmp/vscode-ipc-359fab80-b72f-469f-b5bd-4a751e2da8d6.sock
+VSCODE_IPC_HOOK_CLI = /tmp/vscode-ipc-670de62f-440a-4397-9a66-2542951d2f1d.sock
 # default
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell archives jobserver output-sync check-symlink load
 # environment
@@ -153,9 +153,9 @@ WSL_DISTRO_NAME = Ubuntu-20.04
 
 # Directories
 
-# . (device 2, inode 13792273858860040): 30 files, no impossibilities.
+# . (device 2, inode 13792273858860040): 39 files, no impossibilities.
 
-# 30 files, no impossibilities in 1 directories.
+# 39 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -176,7 +176,7 @@ QwirkleIO.o:
 # Not a target:
 Tile.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2021-05-19 16:03:28.2544879
+#  Last modified 2021-05-20 22:29:55.2115754
 #  File has been updated.
 #  Successfully updated.
 
@@ -236,7 +236,7 @@ GameBoard.o:
 Tile.o: Tile.cpp
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: 'Tile'
-#  File does not exist.
+#  Last modified 2021-05-19 23:56:42.7739881
 #  File has been updated.
 #  Needs to be updated (-q is set).
 # automatic
@@ -268,7 +268,7 @@ testTile.o:
 
 qwirkle: Tile.o Node.o LinkedList.o GameBoard.o Player.o TileBag.o QwirkleIO.o Menu.o qwirkle.o
 #  Implicit rule search has not been done.
-#  File does not exist.
+#  Last modified 2021-05-19 23:59:23.8813185
 #  File has been updated.
 #  Needs to be updated (-q is set).
 # variable set hash-table stats:
@@ -340,12 +340,12 @@ Player.o:
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 56 / storage = 586 B / avg = 10 B
-# current buf: size = 8162 B / used = 586 B / count = 56 / avg = 10 B
+# strcache buffers: 1 (0) / strings = 55 / storage = 560 B / avg = 10 B
+# current buf: size = 8162 B / used = 560 B / count = 55 / avg = 10 B
 
-# strcache performance: lookups = 80 / hit rate = 30%
+# strcache performance: lookups = 89 / hit rate = 38%
 # hash-table stats:
-# Load=56/8192=1%, Rehash=0, Collisions=2/80=2%
-# Finished Make data base on Wed May 19 16:04:08 2021
+# Load=55/8192=1%, Rehash=0, Collisions=2/89=2%
+# Finished Make data base on Mon May 24 17:02:47 2021
 
  
