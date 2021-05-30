@@ -61,14 +61,13 @@ int Player::playTile(GameBoard *board, string loc, string tile)
 bool Player::replaceTile(TileBag *bag, string tile)
 {
     bool replaced = false;
-    Node *n = nullptr;
     Tile *toReplace = hand->getTile(tile);
-    int pos = 0;
+
 
     if (toReplace != nullptr)
     {
         bag->add(toReplace);
-        hand->remove(pos);
+        hand->remove(tile);
         hand->addBack(bag->get(0));
         replaced = true;
     }

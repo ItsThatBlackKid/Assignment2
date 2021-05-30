@@ -8,7 +8,7 @@
 
 int main(void)
 {
-   srand(80);
+   srand(425687931);
    Menu *menu = new Menu();
    menu->runGame();
 }

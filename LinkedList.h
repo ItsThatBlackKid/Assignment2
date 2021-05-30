@@ -37,6 +37,7 @@ public:
 
    // removes Node at position i. DOES NOT DELETE THE NODE
    void remove(int i);
+   void remove(string tile);
 
    // returns copy of node at i   
    Node* get(int i);

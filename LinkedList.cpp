@@ -8,7 +8,6 @@ LinkedList::LinkedList()
    head = nullptr;
    tail = nullptr;
    size = 0;
-
 }
 
 LinkedList::~LinkedList()
@@ -80,8 +79,10 @@ Tile *LinkedList::getTile(string tile)
    Tile *toReturn = nullptr;
    Node *h = head;
    // while not the tail node
-   while (h != nullptr && !found) {
-      if(h->tile->colour == tile[0] && h->tile->shape == tile[1] - '0' ) {
+   while (h != nullptr && !found)
+   {
+      if (h->tile->colour == tile[0] && h->tile->shape == tile[1] - '0')
+      {
          toReturn = h->tile;
          found = true;
       }
@@ -113,7 +114,28 @@ void LinkedList::removeFront()
       }
       size--;
    }
-   
+}
+
+void LinkedList::remove(string tile)
+{
+   bool found = false;
+   Node* prior = head;
+   Node *h = head;
+   // while not the tail node
+   while (h != nullptr && !found)
+   {
+      if (h->tile->colour == tile[0] && h->tile->shape == tile[1] - '0')
+      {
+         prior->next = h->next;
+         found = true;
+         size--;
+      }
+      else
+      {
+         prior = h;
+         h = h->next;
+      }
+   }
 }
 
 void LinkedList::remove(int i)
@@ -135,13 +157,11 @@ void LinkedList::remove(int i)
       this->tail = nullptr;
       size--;
    }
-
-   
 }
 
 ostream &operator<<(ostream &os, LinkedList &list)
 {
-   Node* h = list.getHead();
+   Node *h = list.getHead();
    while (h != nullptr)
    {
       Tile *t = h->tile;
@@ -154,9 +174,10 @@ ostream &operator<<(ostream &os, LinkedList &list)
 
 ofstream &operator<<(ofstream &of, LinkedList &list)
 {
-   Node* h = list.getHead();
-   while(h != nullptr) {
-      
+   Node *h = list.getHead();
+   while (h != nullptr)
+   {
+
       of << *h->tile << ",";
       h = h->next;
    }
@@ -176,7 +197,8 @@ ifstream &operator>>(ifstream &in, LinkedList *list)
    {
       string sub;
       getline(ss, sub, ',');
-      if(sub[0] == ' ') {
+      if (sub[0] == ' ')
+      {
          sub = sub[1];
          sub += sub[2];
       }
@@ -189,7 +211,6 @@ ifstream &operator>>(ifstream &in, LinkedList *list)
       t = new Tile(s[0], s[1] - '0');
       list->addBack(t);
    }
-
 
    return in;
 }

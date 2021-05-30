@@ -99,12 +99,14 @@ void Menu::startNewGame()
         Player *p = players[i];
         LinkedList *list = p->getHand();
         int count = 0;
-        for (Node *h = list->getHead(); h != nullptr; h = h->next)
+        Node *start = list->getHead();
+        for (Node *h = start; h != nullptr; h = h->next)
         {
             Tile *t = h->tile;
             int count2 = count;
             for (Node *j = h->next; j != nullptr; j = j->next)
             {
+                count2++;
                 Tile *t2 = j->tile;
                 // check for similarities
                 if (t->shape == t2->shape || t->colour == t2->colour)
@@ -134,7 +136,6 @@ void Menu::startNewGame()
                         s2++;
                     }
                 }
-                count2++;
             }
             count++;
         }
@@ -161,7 +162,7 @@ void Menu::startNewGame()
     playGame(newPlayers, board, tilebag);
 }
 
-void Menu::playInitialTiles(Player *p, vector<int> ind, GameBoard *board, TileBag* bag)
+void Menu::playInitialTiles(Player *p, vector<int> ind, GameBoard *board, TileBag *bag)
 {
     cout << p->getName() << " starts first, choose which row or column to place tiles (A/0)" << endl;
     cout << *p->getHand() << endl;
@@ -179,22 +180,21 @@ void Menu::playInitialTiles(Player *p, vector<int> ind, GameBoard *board, TileBa
         cout << "ind size; " << ind.size() << endl;
         for (int i = 0; (size_t)i < ind.size(); i++)
         {
-            string opto = tokens.at(1);
+            opto = tokens.at(1);
             int id = ind.at(i);
             if (axis == "column")
             {
-                char row = (char)i + 65;
+                char row = (char) i + 65;
                 int col = opt - '0';
                 string pos(1, row);
                 pos += std::to_string(col);
+                cout << "pos: " << pos << endl;
                 board->TileInsert(pos.c_str(), p->getHand()->get(id)->tile, true);
-                board->getGameBoard().at(i).at(col) = p->getHand()->get(id)->tile;
                 p->getHand()->remove(id);
                 tilePlayed = true;
             }
             else if (axis == "row")
             {
-                int row = opt - 65;
 
                 board->TileInsert(opto.c_str(), p->getHand()->get(id)->tile, true);
                 // board->getGameBoard().at(row).at(i) = p->getHand()->get(id)->tile;
