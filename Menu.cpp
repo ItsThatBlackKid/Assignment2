@@ -1,5 +1,6 @@
 #include "Menu.h"
 #include "QwirkleIO.h"
+#include "util.h"
 #define numofPlayers = 2
 
 Menu::Menu()
@@ -81,14 +82,133 @@ void Menu::startNewGame()
     }
 
     TileBag *tilebag = new TileBag(tilesUnsorted);
-    cout << "Tile Bag created" << endl;
 
     for (Player *p : players)
     {
         p->setTilesInHand(tilebag);
     }
 
-    playGame(players, board, tilebag);
+    array<Player *, 2> newPlayers;
+    vector<int> ind;
+    vector<int> ind2;
+    int s1 = 0;
+    int s2 = 0;
+
+    for (int i = 0; (size_t)i < players.size(); i++)
+    {
+        Player *p = players[i];
+        LinkedList *list = p->getHand();
+        int count = 0;
+        for (Node *h = list->getHead(); h != nullptr; h = h->next)
+        {
+            Tile *t = h->tile;
+            int count2 = count;
+            for (Node *j = h->next; j != nullptr; j = j->next)
+            {
+                Tile *t2 = j->tile;
+                // check for similarities
+                if (t->shape == t2->shape || t->colour == t2->colour)
+                {
+                    if (i == 0)
+                    {
+                        s1++;
+                        if (!std::count(ind.begin(), ind.end(), count))
+                        {
+                            ind.push_back(count);
+                        }
+                        if (!std::count(ind.begin(), ind.end(), count2))
+                        {
+                            ind.push_back(count2);
+                        }
+                    }
+                    else
+                    {
+                        if (!std::count(ind2.begin(), ind2.end(), count))
+                        {
+                            ind2.push_back(count);
+                        }
+                        if (!std::count(ind2.begin(), ind2.end(), count2))
+                        {
+                            ind2.push_back(count2);
+                        }
+                        s2++;
+                    }
+                }
+                count2++;
+            }
+            count++;
+        }
+    }
+
+    if (s1 >= s2)
+    {
+        // do smomething
+        Player *p = players[0];
+        playInitialTiles(p, ind, board, tilebag);
+        newPlayers.at(1) = p;
+        newPlayers.at(0) = players[1];
+    }
+    else
+    {
+        Player *p = players[1];
+        newPlayers.at(1) = p;
+        newPlayers.at(0) = players[0];
+        playInitialTiles(p, ind2, board, tilebag);
+    }
+
+    /* board->TileInsert("D3", tilebag->getFront(), true);
+    tilebag->removeFront(); */
+    playGame(newPlayers, board, tilebag);
+}
+
+void Menu::playInitialTiles(Player *p, vector<int> ind, GameBoard *board, TileBag* bag)
+{
+    cout << p->getName() << " starts first, choose which row or column to place tiles (A/0)" << endl;
+    cout << *p->getHand() << endl;
+    bool tilePlayed = false;
+
+    while (!tilePlayed)
+    {
+        cout << "(ROW x/ COLUMN y)> ";
+        string input = "";
+        getline(cin, input);
+        vector<string> tokens = tokenise(input, ' ');
+        string axis = tokens.at(0);
+        string opto = tokens.at(1);
+        char opt = opto[0];
+        cout << "ind size; " << ind.size() << endl;
+        for (int i = 0; (size_t)i < ind.size(); i++)
+        {
+            string opto = tokens.at(1);
+            int id = ind.at(i);
+            if (axis == "column")
+            {
+                char row = (char)i + 65;
+                int col = opt - '0';
+                string pos(1, row);
+                pos += std::to_string(col);
+                board->TileInsert(pos.c_str(), p->getHand()->get(id)->tile, true);
+                board->getGameBoard().at(i).at(col) = p->getHand()->get(id)->tile;
+                p->getHand()->remove(id);
+                tilePlayed = true;
+            }
+            else if (axis == "row")
+            {
+                int row = opt - 65;
+
+                board->TileInsert(opto.c_str(), p->getHand()->get(id)->tile, true);
+                // board->getGameBoard().at(row).at(i) = p->getHand()->get(id)->tile;
+                p->getHand()->remove(id);
+                p->getTile(bag);
+                tilePlayed = true;
+            }
+            else
+            {
+                cout << "Sorry, invalid input" << endl;
+                i = ind.size();
+            }
+        }
+    }
 }
 
 //Displays the Menu
@@ -185,14 +305,7 @@ void Menu::playGame(std::array<Player *, 2> players, GameBoard *gameBoard, TileB
                     cout << "> ";
                     getline(cin, playerInstruction);
 
-                    vector<string> tokens;
-                    string interim;
-                    stringstream check(playerInstruction);
-
-                    while (getline(check, interim, ' '))
-                    {
-                        tokens.push_back(interim);
-                    }
+                    vector<string> tokens = tokenise(playerInstruction, ' ');
 
                     regex e("[A-Z][0-9]");
 
@@ -232,6 +345,7 @@ void Menu::playGame(std::array<Player *, 2> players, GameBoard *gameBoard, TileB
                     else if (command == "replace")
                     {
                         string tile = tokens[1];
+                        std::transform(tile.begin(), tile.end(), tile.begin(), ::toupper);
                         if (regex_match(tile, e))
                         {
                             p->replaceTile(tileBag, tile);

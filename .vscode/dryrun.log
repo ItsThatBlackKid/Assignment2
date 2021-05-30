@@ -1,14 +1,5 @@
-make --dry-run --always-make --keep-going --print-directory
+make --dry-run --keep-going --print-directory
 make: Entering directory '/root/uni/apt/Ingenuity-s3788996'
-g++ -Wall -Werror -std=c++14 -g -O -c Tile.cpp
-g++ -Wall -Werror -std=c++14 -g -O -c Node.cpp
-g++ -Wall -Werror -std=c++14 -g -O -c LinkedList.cpp
-g++ -Wall -Werror -std=c++14 -g -O -c GameBoard.cpp
-g++ -Wall -Werror -std=c++14 -g -O -c Player.cpp
-g++ -Wall -Werror -std=c++14 -g -O -c TileBag.cpp
-g++ -Wall -Werror -std=c++14 -g -O -c QwirkleIO.cpp
-g++ -Wall -Werror -std=c++14 -g -O -c Menu.cpp
-g++ -Wall -Werror -std=c++14 -g -O -c qwirkle.cpp
-g++ -Wall -Werror -std=c++14 -g -O -o qwirkle Tile.o Node.o LinkedList.o GameBoard.o Player.o TileBag.o QwirkleIO.o Menu.o qwirkle.o
+make: Nothing to be done for 'all'.
 make: Leaving directory '/root/uni/apt/Ingenuity-s3788996'
  

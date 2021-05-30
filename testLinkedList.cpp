@@ -10,11 +10,14 @@ void testGet();
 void testSize();
 void testClear();
 
+void testRemove();
+
 int main(void) {
     // testAddFront();
-    testAddBack();
-
+    // testAddBack();
     // testGet();
+
+    testRemove();
 }
 
 void testAddFront() {
@@ -81,3 +84,24 @@ void testGet() {
     std::cout << msg << std::endl;
 }
 
+void testRemove() {
+    LinkedList* list = new LinkedList();
+
+    for(int i = 0; i < 3; i++) {
+        Tile* t = new Tile();
+
+        //A, B, C
+        t->colour = (char) i + 65;
+        //0, 1, 2
+        t->shape = (Shape) i;
+        list->addBack(t);
+    }
+
+    std::cout << "before remove: " << std::endl;
+    std::cout << *list << std::endl;
+    // delete "B";
+    list->remove(1);
+    std::cout << *list << std::endl;
+
+
+}

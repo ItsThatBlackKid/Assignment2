@@ -50,11 +50,7 @@ int Player::playTile(GameBoard *board, string loc, string tile)
     Tile *toPlay = hand->getTile(tile);
     hand->removeFront();
 
-    if (toPlay == nullptr)
-    {
-        played = -1;
-    }
-    else
+    if (toPlay != nullptr)
     {
         played = board->TileInsert(loc.c_str(), toPlay, false);
     }
@@ -66,27 +62,15 @@ bool Player::replaceTile(TileBag *bag, string tile)
 {
     bool replaced = false;
     Node *n = nullptr;
-    Tile *toReplace = nullptr;
+    Tile *toReplace = hand->getTile(tile);
     int pos = 0;
 
-    for (int i = 0; i < hand->getSize(); i++)
-    {
-        n = hand->get(i);
-
-        Tile *t = n->tile;
-        if (t->colour == tile[0] && t->shape == tile[1])
-        {
-            toReplace = t;
-            pos = i;
-            replaced = true;
-        }
-    }
-
-    if (replaced)
+    if (toReplace != nullptr)
     {
         bag->add(toReplace);
         hand->remove(pos);
         hand->addBack(bag->get(0));
+        replaced = true;
     }
 
     return replaced;

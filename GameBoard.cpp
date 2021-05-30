@@ -3,13 +3,16 @@
 
 GameBoard::GameBoard()
 {
-    gameRow.assign(MAXIMUM_BOARD_SIZE, nullptr);
-    gameBoard.assign(MAXIMUM_BOARD_SIZE, gameRow);
+    rows = 6;
+    cols = 6;
+    gameRow.assign(6, nullptr);
+    gameBoard.assign(6, gameRow);
 }
 
 bool GameBoard::isValid(int row, int col, Tile *t)
 {
-    bool isValid = true;
+    std::cout << "validating" << std::endl;
+    bool isValid = false;
 
     if (tiles > 0)
     {
@@ -19,104 +22,73 @@ bool GameBoard::isValid(int row, int col, Tile *t)
             // here we assume the move is valid, and the gameboard must prove it is not
             // NORTH.
             Tile *tmp;
-            if (i == 0)
+            for (int j = 1; j < 6; j++)
             {
-                // check next six tiles
-                for (int j = 1; j < 6; j++)
+                switch (i)
+                {
+                case 0:
                 {
                     if (row - j >= 0)
                     {
-                        if (isValid)
-                        {
-                            tmp = gameBoard[row - j][col];
-                            if(tmp)
-                                isValid = t->canPlace(tmp);
-                            else {
-                                j = 6;
-                            }
-                        }
-                         if(!isValid){
-                            i = 4; 
+                        tmp = gameBoard.at(row - j).at(col);
+                        if (tmp)
+                            isValid = t->canPlace(tmp);
+                        else
                             j = 6;
-                        }
                     }
-                }
-            }
 
-            // south
-            if (i == 2)
-            {
-                // check next six tiles
-                for (int j = 1; j < 6; j++)
+                    break;
+                }
+                case 1:
                 {
-                    if (row + j >= 0)
+                    if (col + j < cols)
                     {
-                        if (isValid)
-                        {
-                            tmp = gameBoard[row + j][col];
-                            if(tmp)
-                                isValid =  t->canPlace(tmp);
-                            else {
-                                j = 6;
-                            }
-                        }
-
-                        if(!isValid) {
-                            i = 4; 
+                        tmp = gameBoard.at(row).at(col + j);
+                        if (tmp)
+                            isValid = t->canPlace(tmp);
+                        else
                             j = 6;
-                        }
                     }
+
+                    break;
                 }
-            }
-
-            if (i == 1)
-            {
-                // check next six tiles
-                for (int j = 1; j < 6; j++)
+                break;
+                case 2:
                 {
+                    if (row + j < rows)
+                    {
+                        tmp = gameBoard.at(row + j).at(col);
+                        if (tmp) {
+                            isValid = t->canPlace(tmp);
+                            std::cout << "is valid: " << isValid << std::endl;
+                        }
+                        else
+                            j = 6;
+                    }
 
+                    break;
+                }
+                case 3:
+                {
                     if (col - j >= 0)
                     {
-                        if (isValid)
-                        {
-                            tmp = gameBoard[row][col - j];
-                            if (tmp)
-                                isValid = t->canPlace(tmp);
-                            else {
-                                 j =6;
-                            }
-                        }
-                        if(!isValid){
-                            i = 4; 
+                        tmp = gameBoard.at(row).at(col - j);
+                        if (tmp)
+                            isValid = t->canPlace(tmp);
+                        else
                             j = 6;
-                        }
                     }
-                }
-            }
 
-            // east
-            if (i == 3)
-            {
-                // check next six tiles
-                for (int j = 1; j < 6; j++)
-                {
-                    if (col + j < MAXIMUM_BOARD_SIZE)
-                    {
-                        if (isValid)
-                        {
-                            tmp = gameBoard[row][col + j];
-                            if(tmp)
-                                isValid =  t->canPlace(tmp);
-                            else {
-                                 j =5;
-                            }
-                        }
-                        if(!isValid){
-                            i = 4; 
-                            j = 6;
-                        }
-                    }
+                    break;
                 }
+                default:
+                    break;
+                }
+              /*   if (!isValid)
+                {
+                    i = 4;
+                    j = 6;
+                } */
             }
         }
     }
@@ -124,7 +96,7 @@ bool GameBoard::isValid(int row, int col, Tile *t)
     return isValid;
 }
 
-int GameBoard::TileInsert(const char *position, Tile *tile, bool fromFile)
+int GameBoard::TileInsert(const char *position, Tile *tile, bool gameStart)
 {
     int ROW = int(position[0] - 65);
     int COLUMN = int(position[1] - '0');
@@ -139,11 +111,43 @@ int GameBoard::TileInsert(const char *position, Tile *tile, bool fromFile)
 
     int playVal = -1;
 
-    if (gameBoard[ROW][COLUMN] == nullptr)
+    if ((size_t)ROW >= gameBoard.size())
     {
-        if (fromFile || isValid(ROW, COLUMN, tile))
+        vector<Tile *> row;
+        row.assign(6, nullptr);
+        gameBoard.push_back(row);
+        rows = ROW;
+    }
+
+    // add an extra column to each row
+    if ((size_t)COLUMN >= gameBoard.at(rows - 1).size())
+    {
+        int diff = COLUMN - gameBoard.at(rows -1).size();
+        for (size_t i = 0; i < gameBoard.size(); i++)
         {
-            gameBoard[ROW][COLUMN] = tile;
+            if(diff == 0) {
+                gameBoard.at(i).push_back(nullptr);
+            } else {
+                for(int j = 0; j < diff; j++) {
+                    gameBoard.at(i).push_back(nullptr);
+                }
+            } 
+        }
+        vector<Tile *> row;
+        row.assign(6, nullptr);
+        gameBoard.push_back(row);
+        rows = COLUMN;
+        cols = COLUMN;
+    }
+
+
+    if (gameBoard.at(ROW).at(COLUMN) == nullptr)
+    {
+        // add a new row of tiles
+
+        if (gameStart || isValid(ROW, COLUMN, tile))
+        {
+            gameBoard.at(ROW).at(COLUMN) = tile;
             playVal = 0;
             qwirkle = isQwirkle(UP, COLUMN, 0, tile);
             qwirkle = qwirkle || isQwirkle(ROW, RIGHT, 1, tile);
@@ -166,7 +170,7 @@ std::ostream &operator<<(std::ostream &os, const GameBoard &g)
     Colour colour;
     char shape;
     // draw the columns
-    for (int i = 0; i < MAXIMUM_BOARD_SIZE; i++)
+    for (size_t i = 0; i < g.gameBoard.size(); i++)
     {
 
         if (i < 10)
@@ -180,7 +184,7 @@ std::ostream &operator<<(std::ostream &os, const GameBoard &g)
     }
     os << std::endl;
     os << "  ";
-    for (int i = 0; i < MAXIMUM_BOARD_SIZE; i++)
+    for (size_t i = 0; i < g.gameBoard.size(); i++)
     {
         os << "---";
     }
@@ -190,7 +194,8 @@ std::ostream &operator<<(std::ostream &os, const GameBoard &g)
     for (size_t i = 0; i < g.gameBoard.size(); i++)
     {
         os << char(i + 65);
-        for (size_t j = 0; j < g.gameBoard[i].size(); j++)
+        
+        for (size_t j = 0; j < g.gameBoard.at(i).size(); j++)
         {
             if (g.gameBoard[i][j] == nullptr)
             {
@@ -224,7 +229,7 @@ bool GameBoard::isQwirkle(int row, int column, int direction, Tile *t)
             row -= 1;
             if (row >= 0)
             {
-                if (gameBoard[row][column] != nullptr)
+                if (gameBoard.at(row).at(column) != nullptr)
                 {
                     if (doesMatch(row, column, t))
                     {
@@ -248,9 +253,9 @@ bool GameBoard::isQwirkle(int row, int column, int direction, Tile *t)
         for (int i = seqCount; i < 5; i++)
         {
             column += 1;
-            if (column < MAXIMUM_BOARD_SIZE)
+            if (column < cols)
             {
-                if (gameBoard[row][column] != nullptr)
+                if (gameBoard.at(row).at(column) != nullptr)
                 {
                     if (doesMatch(row, column, t))
                     {
@@ -272,9 +277,9 @@ bool GameBoard::isQwirkle(int row, int column, int direction, Tile *t)
         for (int i = seqCount; i < 5; i++)
         {
             row += 1;
-            if (row < MAXIMUM_BOARD_SIZE)
+            if (row < rows)
             {
-                if (gameBoard[row][column] != nullptr)
+                if (gameBoard.at(row).at(column) != nullptr)
                 {
                     if (doesMatch(row, column, t))
                     {
@@ -299,7 +304,7 @@ bool GameBoard::isQwirkle(int row, int column, int direction, Tile *t)
             column -= 1;
             if (column >= 0)
             {
-                if (gameBoard[row][column] != nullptr)
+                if (gameBoard.at(row).at(column) != nullptr)
                 {
                     if (doesMatch(row, column, t))
                     {
@@ -325,7 +330,16 @@ bool GameBoard::isQwirkle(int row, int column, int direction, Tile *t)
 
 bool GameBoard::doesMatch(int row, int column, Tile *t)
 {
-    return gameBoard[row][column]->shape == t->shape || gameBoard[row][column]->colour == t->colour;
+    bool doesMatch = false;
+    if (!gameBoard[row][column])
+    {
+        // do nothing
+    }
+    else
+    {
+        doesMatch = (gameBoard.at(row).at(column)->shape == t->shape || gameBoard.at(row).at(column)->colour == t->colour);
+    }
+    return doesMatch;
 }
 
 ofstream &operator<<(ofstream &of, GameBoard &g)

@@ -8,6 +8,7 @@
 #include "GameBoard.h"
 #include "Tile.h"
 #include "Node.h"
+#include "util.h"
 #include <regex>
 
 using std::cout;
@@ -32,5 +33,6 @@ public:
 
     private:
     void playGame(std::array<Player*,2> players, GameBoard* gameBoard, TileBag* tileBag);
+    void playInitialTiles(Player* p, vector<int> ind, GameBoard* board, TileBag * bag);
 };
 #endif //ASSIGN_MENU_H

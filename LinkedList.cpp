@@ -9,7 +9,6 @@ LinkedList::LinkedList()
    tail = nullptr;
    size = 0;
 
-   // TODO
 }
 
 LinkedList::~LinkedList()
@@ -66,11 +65,10 @@ Node *LinkedList::get(int i)
 {
    int counter = 0;
    Node *h = head;
-   while (counter != i && h != nullptr)
+   while (counter < i && h != nullptr)
    {
       h = h->next;
       counter++;
-
    }
 
    return h;
@@ -113,18 +111,20 @@ void LinkedList::removeFront()
          Node *h = head->next;
          head = h;
       }
+      size--;
    }
-   size--;
+   
 }
 
 void LinkedList::remove(int i)
 {
+
    if (i > 0 && i < size)
    {
       Node *n0 = get(i - 1);
       Node *n1 = get(i + 1);
       n0->next = n1;
-      size++;
+      size--;
    }
    else if (i == 0)
    {
@@ -133,9 +133,10 @@ void LinkedList::remove(int i)
    else if (i == size)
    {
       this->tail = nullptr;
+      size--;
    }
 
-   size--;
+   
 }
 
 ostream &operator<<(ostream &os, LinkedList &list)
@@ -153,11 +154,11 @@ ostream &operator<<(ostream &os, LinkedList &list)
 
 ofstream &operator<<(ofstream &of, LinkedList &list)
 {
-   int count = 0;
-   while (count < list.getSize())
-   {
-      of << *list.get(count)->tile << ",";
-      count++;
+   Node* h = list.getHead();
+   while(h != nullptr) {
+      
+      of << *h->tile << ",";
+      h = h->next;
    }
    of << std::endl;
    return of;

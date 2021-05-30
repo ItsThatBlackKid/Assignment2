@@ -16,6 +16,7 @@ using std::vector;
 using std::array;
 using std::string;
 
+#define MIN_BOARD_SIZE = 6;
 #define MAXIMUM_BOARD_SIZE      26
 class GameBoard{
     
@@ -36,7 +37,9 @@ class GameBoard{
     friend ifstream& operator >> (ifstream& in, GameBoard* g);
 
     private:
-    int tiles;
+    size_t tiles;
+    int cols;
+    int rows;
 
 
 
